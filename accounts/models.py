@@ -145,3 +145,58 @@ class MemberAddress(models.Model):
 
     def __str__(self):
         return '%s' % self.district__name
+
+class Itinerary(models.Model):
+    member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
+    description = models.TextField(_('description'), blank=True)
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('itinerary')
+        verbose_name_plural = _('itineraries')
+
+    def __str__(self):
+        return '%s' % self.member__name
+
+class Transfer(models.Model):
+    itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('itinerary'))
+    departure = models.OneToOneField('Departure', on_delete=models.CASCADE, verbose_name=_('departure'))
+    arrival = models.OneToOneField('Arrival', on_delete=models.CASCADE, verbose_name=_('arrival'))
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('transfer')
+        verbose_name_plural = _('transfers')
+
+    def __str__(self):
+        return '%s' % self.departure__district__name + ' -> ' + '%s' %  self.arrival__district__name
+
+class Departure(models.Model):
+    country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('country'))
+    district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('district'))
+    departing_at = models.DateTimeField(_('departure time'))
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('departure')
+        verbose_name_plural = _('departures')
+
+    def __str__(self):
+        return '%s' % self.departing_at
+
+class Arrival(models.Model):
+    country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('country'))
+    district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('district'))
+    arriving_at  = models.DateTimeField(_('arrival time'))
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('arrival')
+        verbose_name_plural = _('arrivals')
+
+    def __str__(self):
+        return '%s' % self.arriving_at
