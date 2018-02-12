@@ -114,3 +114,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_CHARSET = 'utf-8'
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
