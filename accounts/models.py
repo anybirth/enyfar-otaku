@@ -150,6 +150,7 @@ class MemberAddress(models.Model):
 
 class Itinerary(models.Model):
     member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
+    purpose = models.SmallIntegerField(_('purpose'))
     description = models.TextField(_('description'), blank=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
