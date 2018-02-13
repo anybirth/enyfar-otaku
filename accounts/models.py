@@ -166,6 +166,7 @@ class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('itinerary'))
     departure = models.OneToOneField('Departure', on_delete=models.CASCADE, verbose_name=_('departure'))
     arrival = models.OneToOneField('Arrival', on_delete=models.CASCADE, verbose_name=_('arrival'))
+    ticket = models.SmallIntegerField(_('ticket'))
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
