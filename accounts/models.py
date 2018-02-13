@@ -115,6 +115,7 @@ class Member(models.Model):
     kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, unique=True)
     wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, unique=True)
     phone_number = models.CharField(_('phone number'), max_length=15, blank=True, unique=True)
+    level = models.SmallIntegerField(_('member level'), default=1)
     notice = models.BooleanField(_('notice'), default=False)
     is_verified = models.BooleanField(_('verified'), default=False)
     is_banned = models.BooleanField(_('banned'), default=False)
