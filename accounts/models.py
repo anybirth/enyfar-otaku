@@ -113,6 +113,7 @@ class Member(models.Model):
     facebook_id = models.CharField(_('Facebook ID'), max_length=255, blank=True, unique=True)
     whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, unique=True)
     kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, unique=True)
+    wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, unique=True)
     phone_number = models.CharField(_('phone number'), max_length=15, blank=True, unique=True)
     notice = models.BooleanField(_('notice'), default=False)
     is_verified = models.BooleanField(_('verified'), default=False)
