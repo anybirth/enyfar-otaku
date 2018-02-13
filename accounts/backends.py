@@ -14,5 +14,5 @@ class EmailOrUsernameModelBackend(ModelBackend):
             user = UserModel.objects.get(**kwargs)
             if user.check_password(password):
                 return user
-        except User.DoesNotExist:
-            UserModel().set_password(password)
+        except UserModel.DoesNotExist:
+            UserModel.set_password(password)
