@@ -113,7 +113,9 @@ class Member(models.Model):
     facebook_id = models.CharField(_('Facebook ID'), max_length=255, blank=True, unique=True)
     whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, unique=True)
     kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, unique=True)
+    wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, unique=True)
     phone_number = models.CharField(_('phone number'), max_length=15, blank=True, unique=True)
+    level = models.SmallIntegerField(_('member level'), default=1)
     notice = models.BooleanField(_('notice'), default=False)
     is_verified = models.BooleanField(_('verified'), default=False)
     is_banned = models.BooleanField(_('banned'), default=False)
@@ -148,6 +150,7 @@ class MemberAddress(models.Model):
 
 class Itinerary(models.Model):
     member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
+    purpose = models.SmallIntegerField(_('purpose'))
     description = models.TextField(_('description'), blank=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
@@ -163,6 +166,7 @@ class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('itinerary'))
     departure = models.OneToOneField('Departure', on_delete=models.CASCADE, verbose_name=_('departure'))
     arrival = models.OneToOneField('Arrival', on_delete=models.CASCADE, verbose_name=_('arrival'))
+    ticket = models.SmallIntegerField(_('ticket'))
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 

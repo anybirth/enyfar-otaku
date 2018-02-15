@@ -32,6 +32,8 @@ class Agreement(models.Model):
     price = models.IntegerField(_('price request'), blank=True)
     postage = models.IntegerField(_('postage'), default=0)
     arriving_at = models.DateTimeField(_('arriving at'))
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
     class Meta:
         verbose_name = _('agreement')
