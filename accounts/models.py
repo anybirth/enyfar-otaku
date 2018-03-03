@@ -129,7 +129,7 @@ class Member(models.Model):
         verbose_name_plural = _('members')
 
     def __str__(self):
-        return '%s' % self.user__username
+        return '%s' % self.user.username
 
 class MemberAddress(models.Model):
     member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
@@ -148,7 +148,7 @@ class MemberAddress(models.Model):
         verbose_name_plural = _('member\'s addresses')
 
     def __str__(self):
-        return '%s' % self.district__name
+        return '%s' % self.district.name
 
 class Itinerary(models.Model):
     member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
@@ -162,7 +162,7 @@ class Itinerary(models.Model):
         verbose_name_plural = _('itineraries')
 
     def __str__(self):
-        return '%s' % self.member__name
+        return '%s' % self.member.name
 
 class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('itinerary'))
@@ -177,7 +177,7 @@ class Transfer(models.Model):
         verbose_name_plural = _('transfers')
 
     def __str__(self):
-        return '%s' % self.departure__district__name + ' -> ' + '%s' %  self.arrival__district__name
+        return '%s' % self.departure.district.name + ' -> ' + '%s' %  self.arrival.district.name
 
 class Departure(models.Model):
     country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('country'))
