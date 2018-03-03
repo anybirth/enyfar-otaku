@@ -107,8 +107,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Member(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE, verbose_name=_('user'))
-    jender = models.SmallIntegerField(_('jender'))
-    birthday = models.DateField(_('birthday'))
+    jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
+    birthday = models.DateField(_('birthday'), blank=True, null=True)
     profession = models.CharField(_('profession'), max_length=50, blank=True)
     line_id = models.CharField(_('LINE ID'), max_length=255, blank=True, unique=True)
     twitter_id = models.CharField(_('Twitter ID'), max_length=255, blank=True, unique=True)
