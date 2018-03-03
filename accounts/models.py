@@ -4,6 +4,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from  django.core.validators import RegexValidator
 from django.core.mail import send_mail
 
 # Create your models here.
@@ -44,6 +45,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
+    tel_number_regex = RegexValidator(regex = r'^[0-9]+$', message = ("Tel Number must be entered in the format: '09012345678'. Up to 15 digits allowed."))
 
     username = models.CharField(
         _('username'),
@@ -58,6 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), unique=True)
+    phone_number = models.CharField(_('phone number'), validators=[tel_number_regex], max_length=15,unique=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -114,7 +117,6 @@ class Member(models.Model):
     whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, unique=True)
     kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, unique=True)
     wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, unique=True)
-    phone_number = models.CharField(_('phone number'), max_length=15, blank=True, unique=True)
     level = models.SmallIntegerField(_('member level'), default=1)
     notice = models.BooleanField(_('notice'), default=False)
     is_verified = models.BooleanField(_('verified'), default=False)
