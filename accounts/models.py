@@ -1,10 +1,11 @@
+import uuid
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from  django.core.validators import RegexValidator
+from django.core.validators import RegexValidator
 from django.core.mail import send_mail
 
 # Create your models here.
@@ -45,7 +46,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
-    tel_number_regex = RegexValidator(regex = r'^[0-9]+$', message = ("Tel Number must be entered in the format: '09012345678'. Up to 15 digits allowed."))
+    tel_number_regex = RegexValidator(regex = r'^[0-9]+$', message = ("電話番号はハイフンを除いた半角数字で入力してください。"))
 
     username = models.CharField(
         _('username'),
@@ -60,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), unique=True)
-    phone_number = models.CharField(_('phone number'), validators=[tel_number_regex], max_length=15,unique=True)
+    phone_number = models.CharField(_('電話番号'), validators=[tel_number_regex], max_length=15,unique=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
