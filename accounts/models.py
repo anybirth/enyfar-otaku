@@ -121,6 +121,7 @@ class Member(models.Model):
     level = models.SmallIntegerField(_('member level'), default=1)
     notice = models.BooleanField(_('notice'), default=False)
     is_verified = models.BooleanField(_('verified'), default=False)
+    is_traveller = models.BooleanField(_('traveller'), default=False)
     is_banned = models.BooleanField(_('banned'), default=False)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
