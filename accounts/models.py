@@ -108,6 +108,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Member(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE, verbose_name=_('user'))
+    uuid = models.UUIDField('UUID', primary_key=False, default=uuid.uuid4)
     jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
     birthday = models.DateField(_('birthday'), blank=True, null=True)
     profession = models.CharField(_('profession'), max_length=50, blank=True)
