@@ -63,6 +63,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), unique=True)
     phone_number = models.CharField(_('電話番号'), validators=[tel_number_regex], max_length=15,unique=True)
+    uuid = models.UUIDField('UUID', primary_key=False, blank=True, null=True)
+    uuid_deadline = models.DateTimeField(_('UUID deadline'), blank=True, null=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -109,7 +111,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Member(models.Model):
     user = models.OneToOneField('User', on_delete=models.CASCADE, related_name='member', verbose_name=_('user'))
-    uuid = models.UUIDField('UUID', primary_key=False, default=uuid.uuid4)
     jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
     birthday = models.DateField(_('birthday'), blank=True, null=True)
     profession = models.CharField(_('profession'), max_length=50, blank=True)
