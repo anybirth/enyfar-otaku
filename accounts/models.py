@@ -1,4 +1,5 @@
 import uuid
+import datetime
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
@@ -107,7 +108,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 class Member(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE, verbose_name=_('user'))
+    user = models.OneToOneField('User', on_delete=models.CASCADE, related_name='member', verbose_name=_('user'))
     uuid = models.UUIDField('UUID', primary_key=False, default=uuid.uuid4)
     jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
     birthday = models.DateField(_('birthday'), blank=True, null=True)
