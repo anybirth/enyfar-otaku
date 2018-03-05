@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,8 +44,15 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'accounts.User'
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.EmailOrUsernameModelBackend'
+    'accounts.backends.CustomModelBackend'
 ]
+
+EMAIL_HOST = 'smtp.anybirth.conoha.io'
+EMAIL_HOST_PASSWORD = u'$zxGu50S^E#72%%2Q'
+EMAIL_HOST_USER = 'info'
+EMAIL_PORT = '465'
+EMAIL_SUBJECT_PREFIX = 'Enyfar '
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 MIDDLEWARE = [
@@ -55,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'anybirth.middlewares.MemberMiddleware',
 ]
 
 ROOT_URLCONF = 'anybirth.urls'
@@ -62,7 +71,9 @@ ROOT_URLCONF = 'anybirth.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,6 +106,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_REDIRECT_URL = reverse_lazy('accounts:traveller_profile')
 
 
 # Internationalization
