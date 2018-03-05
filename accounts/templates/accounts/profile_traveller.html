@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar ログイン{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="graph-chart">
+  <div class="graph">
+  </div>
+</div>
+<h2 class="text-center">おすすめのリクエスト</h2>
+<section id="recommended_request" class="scroll">
+  <div class="scroll_wrapper">
+    <div class="scroll_inner">
+      {% for request in requests %}
+      <div class="box">
+        <div class="scroll-img">
+          <p>{{ request.title }}</p>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+      <div class="box">
+        <div class="scroll-img">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="all_request" class="list">
+  <div class="grid-x">
+    <div class="cell small-10 small-offset-1">
+      <div class="list_inner">
+      </div>
+      <div class="list_inner">
+      </div>
+      <div class="list_inner">
+      </div>
+      <div class="list_inner">
+      </div>
+      <div class="list_inner">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <div class="scroll_wrapper">
+<ul class="scroll_inner">
+<li class="box"></li>
+<li class="box"></li>
+<li class="box"></li>
+<li class="box"></li>
+<li class="box"></li>
+<li class="box"></li>
+<li class="box"></li>
+<li class="box"></li>
+<li class="box"></li>
+<li class="box"></li>
+</ul>
+</div> -->
+{% endblock %}

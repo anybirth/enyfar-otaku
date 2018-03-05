@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar ログイン{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">ログイン</h1>
+    <p class="text-center"><a href="" class="button">Facebookでログイン</a></p>
+    <p class="text-center"><a href="" class="button">Googleでログイン</a></p>
+    <p class="text-center"><a href="" class="button">LINEでログイン</a></p>
+    <p class="text-center"><a href="" class="button">Twitterでログイン</a></p>
+    <p class="text-center">または</p>
+    <form method='post'>
+    {% csrf_token %}
+    {% if form.errors %}
+    <p class="text-center" style="color:#f00;">IDまたはパスワードが違います。</p>
+    {% endif %}
+      <label>ユーザー名 または メールアドレス または 電話番号</label>
+      {{ form.username }}
+      <label>パスワード</label>
+      {{ form.password }}
+      <p class="text-center"><input type="submit" value="ログイン" class="button"></p>
+    </form>
+  </div>
+</div>
+{% endblock %}

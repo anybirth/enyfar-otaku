@@ -1,9 +1,12 @@
+import uuid
+import datetime
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
 from django.core.mail import send_mail
 
 # Create your models here.
@@ -44,6 +47,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
+    tel_number_regex = RegexValidator(regex = r'^[0-9]+$', message = ("電話番号はハイフンを除いた半角数字で入力してください。"))
 
     username = models.CharField(
         _('username'),
@@ -58,6 +62,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
     email = models.EmailField(_('email address'), unique=True)
+    phone_number = models.CharField(_('電話番号'), validators=[tel_number_regex], max_length=15, unique=True, blank=True, null=True)
+    uuid = models.UUIDField('UUID', primary_key=False, blank=True, null=True)
+    uuid_deadline = models.DateTimeField(_('UUID deadline'), blank=True, null=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -103,21 +110,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 class Member(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE, verbose_name=_('user'))
-    jender = models.SmallIntegerField(_('jender'))
-    birthday = models.DateField(_('birthday'))
+    user = models.OneToOneField('User', on_delete=models.CASCADE, related_name='member', verbose_name=_('user'))
+    jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
+    birthday = models.DateField(_('birthday'), blank=True, null=True)
     profession = models.CharField(_('profession'), max_length=50, blank=True)
-    line_id = models.CharField(_('LINE ID'), max_length=255, blank=True, unique=True)
-    twitter_id = models.CharField(_('Twitter ID'), max_length=255, blank=True, unique=True)
-    instagram_id = models.CharField(_('Instagram ID'), max_length=255, blank=True, unique=True)
-    facebook_id = models.CharField(_('Facebook ID'), max_length=255, blank=True, unique=True)
-    whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, unique=True)
-    kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, unique=True)
-    wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, unique=True)
-    phone_number = models.CharField(_('phone number'), max_length=15, blank=True, unique=True)
+    line_id = models.CharField(_('LINE ID'), max_length=255, blank=True, null=True, unique=True)
+    twitter_id = models.CharField(_('Twitter ID'), max_length=255, blank=True, null=True, unique=True)
+    instagram_id = models.CharField(_('Instagram ID'), max_length=255, blank=True, null=True, unique=True)
+    facebook_id = models.CharField(_('Facebook ID'), max_length=255, blank=True, null=True, unique=True)
+    whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, null=True, unique=True)
+    kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, null=True, unique=True)
+    wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, null=True, unique=True)
     level = models.SmallIntegerField(_('member level'), default=1)
     notice = models.BooleanField(_('notice'), default=False)
     is_verified = models.BooleanField(_('verified'), default=False)
+    is_traveller = models.BooleanField(_('traveller'), default=False)
     is_banned = models.BooleanField(_('banned'), default=False)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
@@ -127,7 +134,7 @@ class Member(models.Model):
         verbose_name_plural = _('members')
 
     def __str__(self):
-        return '%s' % self.user__username
+        return '%s' % self.user.username
 
 class MemberAddress(models.Model):
     member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
@@ -146,7 +153,7 @@ class MemberAddress(models.Model):
         verbose_name_plural = _('member\'s addresses')
 
     def __str__(self):
-        return '%s' % self.district__name
+        return '%s' % self.district.name
 
 class Itinerary(models.Model):
     member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
@@ -160,7 +167,7 @@ class Itinerary(models.Model):
         verbose_name_plural = _('itineraries')
 
     def __str__(self):
-        return '%s' % self.member__name
+        return '%s' % self.member.name
 
 class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('itinerary'))
@@ -175,7 +182,7 @@ class Transfer(models.Model):
         verbose_name_plural = _('transfers')
 
     def __str__(self):
-        return '%s' % self.departure__district__name + ' -> ' + '%s' %  self.arrival__district__name
+        return '%s' % self.departure.district.name + ' -> ' + '%s' %  self.arrival.district.name
 
 class Departure(models.Model):
     country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('country'))

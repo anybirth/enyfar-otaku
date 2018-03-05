@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar 仮登録完了{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">無効なURLです</h1>
+    <p class="text-center">認証がお済みでない場合は、以下のフォームにメールアドレスを入力し、もう一度認証メールを送ってください。</p>
+    <form method="post" action="{% url 'accounts:activate_error' %}">
+      {% csrf_token %}
+      {% if form.errors %}
+      <!-- <p class="text-center" style="color:#f00;">メールアドレスに一致するユーザーが見つかりません</p> -->
+      {% endif %}
+      {{ form.as_p }}
+      <p class="text-center"><input type="submit" value="送信" class="button"></p>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
