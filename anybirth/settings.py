@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = reverse_lazy('accounts:traveller_profile')
+LOGIN_REDIRECT_URL = reverse_lazy('accounts:profile_traveller')
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
