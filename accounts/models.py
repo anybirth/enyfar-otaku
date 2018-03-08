@@ -20,8 +20,6 @@ class UserManager(BaseUserManager):
         """
         if not username:
             raise ValueError('The given username must be set')
-        if not email:
-            raise ValueError('The given email must be set')
         email = self.normalize_email(email)
         username = self.model.normalize_username(username)
         user = self.model(username=username, email=email, **extra_fields)
@@ -61,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_('email address'), unique=True, blank=True, null=True)
     phone_number = models.CharField(_('電話番号'), validators=[tel_number_regex], max_length=15, unique=True, blank=True, null=True)
     uuid = models.UUIDField('UUID', primary_key=False, blank=True, null=True)
     uuid_deadline = models.DateTimeField(_('UUID deadline'), blank=True, null=True)
