@@ -77,6 +77,23 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
+    birthday = models.DateField(_('birthday'), blank=True, null=True)
+    profession = models.CharField(_('profession'), max_length=50, blank=True)
+    line_id = models.CharField(_('LINE ID'), max_length=255, blank=True, null=True, unique=True)
+    twitter_id = models.CharField(_('Twitter ID'), max_length=255, blank=True, null=True, unique=True)
+    instagram_id = models.CharField(_('Instagram ID'), max_length=255, blank=True, null=True, unique=True)
+    facebook_id = models.CharField(_('Facebook ID'), max_length=255, blank=True, null=True, unique=True)
+    whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, null=True, unique=True)
+    kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, null=True, unique=True)
+    wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, null=True, unique=True)
+    level = models.SmallIntegerField(_('user level'), default=1)
+    notice = models.BooleanField(_('notice'), default=False)
+    is_verified = models.BooleanField(_('verified'), default=False)
+    is_traveller = models.BooleanField(_('traveller'), default=False)
+    is_banned = models.BooleanField(_('banned'), default=False)
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
     objects = UserManager()
 
@@ -107,35 +124,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-class Member(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE, related_name='member', verbose_name=_('user'))
-    jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
-    birthday = models.DateField(_('birthday'), blank=True, null=True)
-    profession = models.CharField(_('profession'), max_length=50, blank=True)
-    line_id = models.CharField(_('LINE ID'), max_length=255, blank=True, null=True, unique=True)
-    twitter_id = models.CharField(_('Twitter ID'), max_length=255, blank=True, null=True, unique=True)
-    instagram_id = models.CharField(_('Instagram ID'), max_length=255, blank=True, null=True, unique=True)
-    facebook_id = models.CharField(_('Facebook ID'), max_length=255, blank=True, null=True, unique=True)
-    whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, null=True, unique=True)
-    kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, null=True, unique=True)
-    wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, null=True, unique=True)
-    level = models.SmallIntegerField(_('member level'), default=1)
-    notice = models.BooleanField(_('notice'), default=False)
-    is_verified = models.BooleanField(_('verified'), default=False)
-    is_traveller = models.BooleanField(_('traveller'), default=False)
-    is_banned = models.BooleanField(_('banned'), default=False)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
-
-    class Meta:
-        verbose_name = _('member')
-        verbose_name_plural = _('members')
-
-    def __str__(self):
-        return '%s' % self.user.username
-
-class MemberAddress(models.Model):
-    member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
+class UserAddress(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('user'))
     district = models.ForeignKey('meta.District', on_delete=models.CASCADE, verbose_name=_('district'))
     postal_code = models.CharField(_('postal code'), max_length=9)
     address1 = models.CharField(_('address1'), max_length=255)
@@ -147,14 +137,14 @@ class MemberAddress(models.Model):
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
     class Meta:
-        verbose_name = _('member\'s address')
-        verbose_name_plural = _('member\'s addresses')
+        verbose_name = _('user\'s address')
+        verbose_name_plural = _('user\'s addresses')
 
     def __str__(self):
         return '%s' % self.district.name
 
 class Itinerary(models.Model):
-    member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
+    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('user'))
     purpose = models.SmallIntegerField(_('purpose'))
     description = models.TextField(_('description'), blank=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
@@ -165,7 +155,7 @@ class Itinerary(models.Model):
         verbose_name_plural = _('itineraries')
 
     def __str__(self):
-        return '%s' % self.member.name
+        return '%s' % self.user.name
 
 class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('itinerary'))

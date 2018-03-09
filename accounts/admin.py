@@ -27,4 +27,4 @@ class UserAdmin(BaseUserAdmin):
     add_form = CustomUserCreationForm
 
 admin.site.register(models.User, UserAdmin)
-admin.site.register([models.Member, models.MemberAddress, models.Itinerary, models.Transfer, models.Departure, models.Arrival,])
+admin.site.register([models.UserAddress, models.Itinerary, models.Transfer, models.Departure, models.Arrival,])
