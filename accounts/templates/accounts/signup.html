@@ -6,7 +6,7 @@
 <div class="grid-x">
   <div class="cell small-10 small-offset-1">
     <h1 class="text-center">{% if view.traveller == True %}トラベラー{% endif %}会員登録</h1>
-    {% if view.traveller == Flase %}
+    {% if view.traveller == False %}
     <p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'accounts:social_confirm' %}" class="button">Googleでログイン</a></p>
     <p class="text-center"><a href="{% url 'social:begin' 'facebook' %}?next={% url 'accounts:social_confirm' %}" class="button">Facebookでログイン</a></p>
     <p class="text-center"><a href="{% url 'social:begin' 'twitter' %}?next={% url 'accounts:social_confirm' %}" class="button">Twitterでログイン</a></p>
