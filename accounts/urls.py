@@ -15,5 +15,6 @@ urlpatterns = [
     path('activate/error', views.ActivateErrorView.as_view(), name='activate_error'),
     path('activate/again', views.ActivateAgainView.as_view(), name='activate_again'),
     path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
     path('profile/traveller/', views.ProfileTravellerView.as_view(), name='profile_traveller'),
 ]

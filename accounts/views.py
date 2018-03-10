@@ -142,7 +142,10 @@ class ActivateAgainView(generic.TemplateView):
     template_name = 'accounts/activate_again.html'
 
 class LoginView(auth_views.LoginView):
-    template_name='accounts/login.html'
+    template_name = 'accounts/login.html'
+
+class LogoutView(auth_views.LogoutView):
+    next_page = reverse_lazy('accounts:login')
 
 @method_decorator(login_required, name='dispatch')
 class ProfileTravellerView(generic.ListView):
