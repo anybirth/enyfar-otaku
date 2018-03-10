@@ -1,5 +1,6 @@
 import uuid
 import datetime
+from socket import gethostbyaddr, gethostbyname, gethostname
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django import http
@@ -45,7 +46,7 @@ class EmailSignupView(generic.CreateView):
         user.save()
         send_mail(
             u'仮登録完了',
-            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\n' + reverse_lazy('accounts:activate', args=[_uuid,]),
+            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[_uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -58,6 +59,9 @@ class SocialConfirmView(generic.UpdateView):
     template_name = 'accounts/social_confirm.html'
     success_url = reverse_lazy('accounts:complete')
     traveller = False
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
     def get(self, request):
         user = request.user
@@ -80,7 +84,7 @@ class SocialConfirmView(generic.UpdateView):
         user.save()
         send_mail(
             u'仮登録完了',
-            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\n' + str(reverse_lazy('accounts:activate', args=[_uuid,])),
+            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + str(reverse_lazy('accounts:activate', args=[_uuid,])),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -131,7 +135,7 @@ class ActivateErrorView(generic.FormView):
         user.save()
         send_mail(
             u'再認証メール',
-            u'以下のURLより本登録を完了させてください。\n\n' + reverse_lazy('accounts:activate', args=[_uuid,]),
+            u'以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[_uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
