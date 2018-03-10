@@ -94,7 +94,7 @@ class SocialConfirmView(generic.UpdateView):
 class CompleteView(generic.TemplateView):
     template_name = 'accounts/complete.html'
 
-class ActivateView(generic.View):
+class ActivateView(generic.TemplateView):
     template_name = 'accounts/activate.html'
 
     def get(self, request, uuid):
@@ -115,7 +115,7 @@ class ActivateView(generic.View):
             [user.email],
             fail_silently=False,
         )
-        return render(request, 'accounts/activate.html', {'uuid': user.uuid})
+        return super().get(request, uuid)
 
 class ActivateErrorView(generic.FormView):
     form_class = forms.ActivateForm
