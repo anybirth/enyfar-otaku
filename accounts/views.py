@@ -152,6 +152,12 @@ class LogoutView(auth_views.LogoutView):
     next_page = reverse_lazy('accounts:login')
 
 @method_decorator(login_required, name='dispatch')
+class ProfileView(generic.ListView):
+    model = Request
+    template_name = 'accounts/profile.html'
+    context_object_name = 'requests'
+
+@method_decorator(login_required, name='dispatch')
 class ProfileTravellerView(generic.ListView):
     model = Request
     template_name = 'accounts/profile_traveller.html'
