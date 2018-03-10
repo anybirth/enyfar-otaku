@@ -5,14 +5,24 @@
 
 <div class="grid-x">
   <div class="cell small-10 small-offset-1">
-    <h1 class="text-center">会員登録</h1>
-    <p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}" class="button">Googleでログイン</a></p>
-    <p class="text-center"><a href="{% url 'social:begin' 'facebook' %}" class="button">Facebookでログイン</a></p>
-    <p class="text-center"><a href="{% url 'social:begin' 'twitter' %}" class="button">Twitterでログイン</a></p>
+    <h1 class="text-center">{% if view.traveller == True %}トラベラー{% endif %}会員登録</h1>
+    {% if view.traveller == Flase %}
+    <p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'accounts:social_confirm' %}" class="button">Googleでログイン</a></p>
+    <p class="text-center"><a href="{% url 'social:begin' 'facebook' %}?next={% url 'accounts:social_confirm' %}" class="button">Facebookでログイン</a></p>
+    <p class="text-center"><a href="{% url 'social:begin' 'twitter' %}?next={% url 'accounts:social_confirm' %}" class="button">Twitterでログイン</a></p>
     <p class="text-center"><a href="" class="button">LINEでログイン</a></p>
     <p class="text-center"><a href="" class="button">Yahooでログイン</a></p>
     <p class="text-center">または</p>
     <p class="text-center"><a href="{% url 'accounts:email_signup' %}" class="button">メールアドレスで登録</a></p>
+    {% elif view.traveller == True %}
+    <p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'accounts:social_confirm_traveller' %}" class="button">Googleでログイン</a></p>
+    <p class="text-center"><a href="{% url 'social:begin' 'facebook' %}?next={% url 'accounts:social_confirm_traveller' %}" class="button">Facebookでログイン</a></p>
+    <p class="text-center"><a href="{% url 'social:begin' 'twitter' %}?next={% url 'accounts:social_confirm_traveller' %}" class="button">Twitterでログイン</a></p>
+    <p class="text-center"><a href="" class="button">LINEでログイン</a></p>
+    <p class="text-center"><a href="" class="button">Yahooでログイン</a></p>
+    <p class="text-center">または</p>
+    <p class="text-center"><a href="{% url 'accounts:email_signup' %}" class="button">メールアドレスで登録</a></p>
+    {% endif %}
     <p class="text-center">アカウントをお持ちの方は<a href="{% url 'accounts:login' %}">こちら</a></p>
   </div>
 </div>
