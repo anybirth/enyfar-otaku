@@ -156,12 +156,3 @@ class ProfileTravellerView(generic.ListView):
     model = Request
     template_name = 'accounts/profile_traveller.html'
     context_object_name = 'requests'
-
-    def get_queryset(self, **kwargs):
-        if not self.request.user:
-            return Request.objects.filter(item__buyer=self.request.user)
-        else:
-            return Request.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
