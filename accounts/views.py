@@ -81,7 +81,7 @@ class SocialConfirmView(generic.UpdateView):
             return redirect('accounts:signup')
         elif user.uuid:
             return redirect('accounts:already_registered')
-        user.social_confirm_deadline = timezone.now() + datetime.timedelta(hours=1)
+        user.social_confirm_deadline = timezone.now() + datetime.timedelta(minutes=10)
         user.save()
         models.User.objects.filter(social_confirm_deadline__lte= timezone.now()).delete()
         return super().get(request)
