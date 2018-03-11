@@ -19,4 +19,6 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('profile/traveller/', views.ProfileTravellerView.as_view(), name='profile_traveller'),
+    path('profile/associate/', views.AssociateView.as_view(), name='associate'),
+    path('profile/associate/complete/', views.AssociateCompleteView.as_view(), name='associate_complete'),
 ]

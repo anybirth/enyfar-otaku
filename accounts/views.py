@@ -190,3 +190,11 @@ class ProfileTravellerView(generic.ListView):
         if not user.is_staff and not user.uuid:
             return redirect('accounts:social_confirm')
         return super().get(request)
+
+@method_decorator(login_required, name='dispatch')
+class AssociateView(generic.TemplateView):
+    template_name = 'accounts/associate.html'
+
+@method_decorator(login_required, name='dispatch')
+class AssociateCompleteView(generic.TemplateView):
+    template_name = 'accounts/associate_complete.html'
