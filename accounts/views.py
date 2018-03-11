@@ -74,6 +74,8 @@ class SocialConfirmView(generic.UpdateView):
 
     def get(self, request):
         user = request.user
+        if user.uuid:
+            return redirect('accounts:already_registered')
         user.social_confirm_deadline = timezone.now() + datetime.timedelta(hours=1)
         user.save()
         models.User.objects.filter(social_confirm_deadline__lte= timezone.now()).delete()
@@ -98,6 +100,9 @@ class SocialConfirmView(generic.UpdateView):
             fail_silently=False,
         )
         return super().form_valid(form)
+
+class AlreadyRegisteredView(generic.TemplateView):
+    template_name = 'accounts/already_registered.html'
 
 class CompleteView(generic.TemplateView):
     template_name = 'accounts/complete.html'
@@ -167,7 +172,6 @@ class ProfileView(generic.ListView):
     model = Request
     template_name = 'accounts/profile.html'
     context_object_name = 'requests'
-
 
 @method_decorator(login_required, name='dispatch')
 class ProfileTravellerView(generic.ListView):
