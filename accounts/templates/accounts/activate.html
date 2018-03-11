@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}Enyfar 仮登録完了{% endblock %}
+{% block title %}Enyfar 本登録完了{% endblock %}
 {% load static %}
 {% block content %}
 
 <div class="grid-x">
   <div class="cell small-10 small-offset-1">
     <h1 class="text-center">本登録が完了しました</h1>
-    <p class="text-center">ご登録いただいたメールアドレス宛に認証メールを送信しました。</p>
-    <p class="text-center">添付されたURLへアクセスいただき、本登録を行ってください</p>
+    <p class="text-center"><a href="{% url 'accounts:login' %}" class="button">ログイン</a></p>
   </div>
 </div>
 
