@@ -173,8 +173,20 @@ class ProfileView(generic.ListView):
     template_name = 'accounts/profile.html'
     context_object_name = 'requests'
 
+    def get(self, request):
+        user = request.user
+        if not user.is_staff and not user.uuid:
+            return redirect('accounts:social_confirm')
+        return super().get(request)
+
 @method_decorator(login_required, name='dispatch')
 class ProfileTravellerView(generic.ListView):
     model = Request
     template_name = 'accounts/profile_traveller.html'
     context_object_name = 'requests'
+
+    def get(self, request):
+        user = request.user
+        if not user.is_staff and not user.uuid:
+            return redirect('accounts:social_confirm')
+        return super().get(request)
