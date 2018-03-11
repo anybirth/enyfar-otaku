@@ -48,13 +48,6 @@ AUTHENTICATION_BACKENDS = [
     'accounts.backends.CustomModelBackend'
 ]
 
-EMAIL_HOST = 'smtp.anybirth.conoha.io'
-EMAIL_HOST_PASSWORD = u'$zxGu50S^E#72%%2Q'
-EMAIL_HOST_USER = 'info'
-EMAIL_PORT = '465'
-EMAIL_SUBJECT_PREFIX = 'Enyfar '
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
