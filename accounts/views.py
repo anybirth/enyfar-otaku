@@ -46,17 +46,16 @@ class EmailSignupView(generic.CreateView):
         return super().get(request)
 
     def form_valid(self, form):
-        _uuid = str(uuid.uuid4())
         form.instance.password = make_password(self.request.POST.get('password'))
         user = form.save(commit=False)
         user.is_traveller = self.traveller
         user.email_verified=False
-        user.uuid = _uuid
+        user.uuid = str(uuid.uuid4())
         user.uuid_deadline = timezone.now() + datetime.timedelta(days=1)
         user.save()
         send_mail(
             u'仮登録完了',
-            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[_uuid,]),
+            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -83,18 +82,17 @@ class SocialConfirmView(generic.UpdateView):
     def form_valid(self, form):
         if not self.request.user:
             return render(request, 'accounts:signup')
-        _uuid = str(uuid.uuid4())
         form.instance.password = make_password(self.request.POST.get('password'))
         user = form.save(commit=False)
         user.is_traveller = self.traveller
         user.email_verified=False
         user.social_confirm_deadline = None
-        user.uuid = _uuid
+        user.uuid = str(uuid.uuid4())
         user.uuid_deadline = timezone.now() + datetime.timedelta(days=1)
         user.save()
         send_mail(
             u'仮登録完了',
-            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + str(reverse_lazy('accounts:activate', args=[_uuid,])),
+            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + str(reverse_lazy('accounts:activate', args=[user.uuid,])),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -112,10 +110,9 @@ class ActivateView(generic.TemplateView):
             user = models.User.objects.get(uuid=uuid)
         except models.User.DoesNotExist:
             return redirect('accounts:activate_error')
-        if timezone.now() > user.uuid_deadline:
+        if user.uuid_deadline < timezone.now() or not user.uuid_deadline:
             return redirect('accounts:activate_error')
         user.email_verified = True
-        user.uuid = None
         user.uuid_deadline = None
         user.save()
         send_mail(
@@ -139,13 +136,12 @@ class ActivateErrorView(generic.FormView):
         except models.User.DoesNotExist:
             form.add_error(field='email', error='メールアドレスに一致するユーザーが見つかりません')
             return super().form_invalid(form)
-        _uuid = str(uuid.uuid4())
-        user.uuid = _uuid
+        user.uuid = str(uuid.uuid4())
         user.uuid_deadline = timezone.now() + datetime.timedelta(days=1)
         user.save()
         send_mail(
             u'再認証メール',
-            u'以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[_uuid,]),
+            u'以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -171,6 +167,7 @@ class ProfileView(generic.ListView):
     model = Request
     template_name = 'accounts/profile.html'
     context_object_name = 'requests'
+
 
 @method_decorator(login_required, name='dispatch')
 class ProfileTravellerView(generic.ListView):
