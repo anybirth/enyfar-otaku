@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
             'email': forms.EmailInput(),
             'password': forms.PasswordInput(),
             'birthday': forms.SelectDateWidget(
-                years=range(1900, timezone.now().year),
+                years=range(1900, timezone.now().year)[::-1],
                 empty_label=("年", "月", "日"),
             ),
         }
