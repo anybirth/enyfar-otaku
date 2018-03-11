@@ -28,12 +28,22 @@ class SignupView(generic.TemplateView):
     def get_object(self, queryset=None):
         return queryset.get(traveller=self.traveller)
 
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('accounts:profile')
+        return super().get(request)
+
 class EmailSignupView(generic.CreateView):
     model = models.User
     form_class = forms.UserForm
     template_name = 'accounts/email_signup.html'
     success_url = reverse_lazy('accounts:complete')
     traveller = False
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('accounts:profile')
+        return super().get(request)
 
     def form_valid(self, form):
         _uuid = str(uuid.uuid4())
@@ -147,6 +157,11 @@ class ActivateAgainView(generic.TemplateView):
 
 class LoginView(auth_views.LoginView):
     template_name = 'accounts/login.html'
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('accounts:profile')
+        return super().get(request)
 
 class LogoutView(auth_views.LogoutView):
     next_page = reverse_lazy('accounts:login')
