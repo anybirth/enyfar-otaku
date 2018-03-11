@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth import backends
 from .forms import UserForm
 
-class CustomModelBackend(ModelBackend):
+class ModelBackend(backends.ModelBackend):
 
     def authenticate(self, request, username=None, password=None):
         UserModel = get_user_model()
