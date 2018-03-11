@@ -73,8 +73,13 @@ class SocialConfirmView(generic.UpdateView):
         return self.request.user
 
     def get(self, request):
-        user = request.user
-        if user.uuid:
+        try:
+            user = request.user
+        except:
+            return redirect('accounts:signup')
+        if isinstance(user, AnonymousUser) or user.is_staff:
+            return redirect('accounts:signup')
+        elif user.uuid:
             return redirect('accounts:already_registered')
         user.social_confirm_deadline = timezone.now() + datetime.timedelta(hours=1)
         user.save()
