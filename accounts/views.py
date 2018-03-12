@@ -77,7 +77,7 @@ class SocialConfirmView(generic.UpdateView):
             user = request.user
         except:
             return redirect('accounts:signup')
-        if isinstance(user, AnonymousUser) or user.is_staff:
+        if not request.user.is_authenticated or user.is_staff:
             return redirect('accounts:signup')
         elif user.uuid:
             return redirect('accounts:already_registered')
@@ -87,8 +87,8 @@ class SocialConfirmView(generic.UpdateView):
         return super().get(request)
 
     def form_valid(self, form):
-        if not self.request.user:
-            return render(request, 'accounts:signup')
+        if not self.request.user.is_authenticated:
+            return redirect('accounts:signup')
         form.instance.password = make_password(self.request.POST.get('password'))
         user = form.save(commit=False)
         user.is_traveller = self.traveller
