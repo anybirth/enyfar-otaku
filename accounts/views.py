@@ -220,6 +220,11 @@ class ProfileTravellerView(generic.ListView):
 class AssociateView(generic.TemplateView):
     template_name = 'accounts/associate.html'
 
+    def get(self, request):
+        if request.user.is_staff:
+            return redirect('accounts:logout')
+        return super().get(request)
+
 @method_decorator(login_required, name='dispatch')
 class AssociateCompleteView(generic.TemplateView):
     template_name = 'accounts/associate_complete.html'
