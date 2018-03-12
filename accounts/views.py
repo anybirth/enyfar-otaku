@@ -88,7 +88,8 @@ class SocialConfirmView(generic.UpdateView):
         return super().get(request)
 
     def form_valid(self, form):
-        if not request.user.is_authenticated:
+        user = self.request.user
+        if not user.is_authenticated:
             return http.HttpResponseServerError()
         elif user.uuid:
             return redirect('accounts:already_registered')
@@ -106,7 +107,7 @@ class SocialConfirmView(generic.UpdateView):
             u'仮登録完了',
             u'仮登録が完了しました。\n' +
             '以下のURLより本登録を完了させてください。\n\n' +
-            'https://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
+            'https://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + str(reverse_lazy('accounts:activate', args=[user.uuid,])),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
