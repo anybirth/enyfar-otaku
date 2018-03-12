@@ -55,7 +55,9 @@ class EmailSignupView(generic.CreateView):
         user.save()
         send_mail(
             u'仮登録完了',
-            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
+            u'仮登録が完了しました。\n' +
+            '以下のURLより本登録を完了させてください。\n\n' +
+            'https://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -102,7 +104,9 @@ class SocialConfirmView(generic.UpdateView):
         user.save()
         send_mail(
             u'仮登録完了',
-            u'仮登録が完了しました。\n以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + str(reverse_lazy('accounts:activate', args=[user.uuid,])),
+            u'仮登録が完了しました。\n' +
+            '以下のURLより本登録を完了させてください。\n\n' +
+            'https://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -154,7 +158,8 @@ class ActivateErrorView(generic.FormView):
         user.save()
         send_mail(
             u'再認証メール',
-            u'以下のURLより本登録を完了させてください。\n\nhttps://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
+            u'以下のURLより本登録を完了させてください。\n\n' +
+            'https://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
