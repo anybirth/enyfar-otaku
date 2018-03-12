@@ -73,22 +73,25 @@ class SocialConfirmView(generic.UpdateView):
         return self.request.user
 
     def get(self, request):
-        try:
-            user = request.user
-        except:
-            return redirect('accounts:signup')
-        if not request.user.is_authenticated or user.is_staff:
-            return redirect('accounts:signup')
+        user = request.user
+        if not request.user.is_authenticated:
+            return http.HttpResponseServerError()
         elif user.uuid:
             return redirect('accounts:already_registered')
+        elif user.is_staff:
+            return redirect('accounts:logout')
         user.social_confirm_deadline = timezone.now() + datetime.timedelta(minutes=10)
         user.save()
         models.User.objects.filter(social_confirm_deadline__lte= timezone.now()).delete()
         return super().get(request)
 
     def form_valid(self, form):
-        if not self.request.user.is_authenticated:
-            return redirect('accounts:signup')
+        if not request.user.is_authenticated:
+            return http.HttpResponseServerError()
+        elif user.uuid:
+            return redirect('accounts:already_registered')
+        elif user.is_staff:
+            return redirect('accounts:logout')
         form.instance.password = make_password(self.request.POST.get('password'))
         user = form.save(commit=False)
         user.is_traveller = self.traveller
