@@ -4,6 +4,7 @@ from socket import gethostbyaddr, gethostbyname, gethostname
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django import http
+from django.conf import settings
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -53,11 +54,14 @@ class EmailSignupView(generic.CreateView):
         user.uuid = str(uuid.uuid4())
         user.uuid_deadline = timezone.now() + datetime.timedelta(days=1)
         user.save()
+
+        protocol = 'https://' if self.request.is_secure() else 'http://'
+        host_name = settings.HOST_NAME
         send_mail(
             u'仮登録完了',
             u'仮登録が完了しました。\n' +
             '以下のURLより本登録を完了させてください。\n\n' +
-            'https://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
+            protocol + host_name + reverse_lazy('accounts:activate', args=[user.uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -103,11 +107,14 @@ class SocialConfirmView(generic.UpdateView):
         user.uuid = str(uuid.uuid4())
         user.uuid_deadline = timezone.now() + datetime.timedelta(days=1)
         user.save()
+
+        protocol = 'https://' if self.request.is_secure() else 'http://'
+        host_name = settings.HOST_NAME
         send_mail(
             u'仮登録完了',
             u'仮登録が完了しました。\n' +
             '以下のURLより本登録を完了させてください。\n\n' +
-            'https://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + str(reverse_lazy('accounts:activate', args=[user.uuid,])),
+            protocol + host_name + str(reverse_lazy('accounts:activate', args=[user.uuid,])),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -133,6 +140,7 @@ class ActivateView(generic.TemplateView):
         user.email_verified = True
         user.uuid_deadline = None
         user.save()
+
         send_mail(
             u'本登録完了',
             u'本登録が完了しました。本サービスをお楽しみください。',
@@ -157,10 +165,13 @@ class ActivateErrorView(generic.FormView):
         user.uuid = str(uuid.uuid4())
         user.uuid_deadline = timezone.now() + datetime.timedelta(days=1)
         user.save()
+
+        protocol = 'https://' if self.request.is_secure() else 'http://'
+        host_name = settings.HOST_NAME
         send_mail(
             u'再認証メール',
             u'以下のURLより本登録を完了させてください。\n\n' +
-            'https://' + gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] + reverse_lazy('accounts:activate', args=[user.uuid,]),
+            protocol + host_name + reverse_lazy('accounts:activate', args=[user.uuid,]),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,

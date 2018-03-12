@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from socket import gethostbyaddr, gethostbyname, gethostname
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -153,6 +154,9 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+
+HOST_NAME = '192.168.33.10:8000' if gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] == 'localhost' else gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0]
 
 try:
     from .local_settings import *
