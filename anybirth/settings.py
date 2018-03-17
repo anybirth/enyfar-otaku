@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from socket import gethostbyaddr, gethostbyname, gethostname
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'accounts',
     'main',
     'meta',
@@ -47,13 +49,6 @@ AUTHENTICATION_BACKENDS = [
     'accounts.backends.CustomModelBackend'
 ]
 
-EMAIL_HOST = 'smtp.anybirth.conoha.io'
-EMAIL_HOST_PASSWORD = u'$zxGu50S^E#72%%2Q'
-EMAIL_HOST_USER = 'info'
-EMAIL_PORT = '465'
-EMAIL_SUBJECT_PREFIX = 'Enyfar '
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'anybirth.middlewares.MemberMiddleware',
+    # 'anybirth.middlewares.MemberMiddleware',
 ]
 
 ROOT_URLCONF = 'anybirth.urls'
@@ -81,6 +76,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -107,7 +104,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = reverse_lazy('accounts:traveller_profile')
+LOGIN_REDIRECT_URL = reverse_lazy('accounts:profile')
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.google.GoogleOpenId',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.line.LineOAuth2',
+    'accounts.backends.ModelBackend',
+)
 
 
 # Internationalization
@@ -134,6 +141,22 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_CHARSET = 'utf-8'
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
+
+HOST_NAME = '192.168.33.10:8000' if gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] == 'localhost' else gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0]
 
 try:
     from .local_settings import *

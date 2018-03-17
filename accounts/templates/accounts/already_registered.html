@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar 会員登録{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">すでにこのメールアドレスは登録されています</h1>
+    <p>お使いのEnyfarアカウントとご登録いただいたソーシャル・アカウントを連携しました</p>
+    <p>連携を解除したい場合は、<a href="{% url 'accounts:profile' %}">マイページ</a>よりお手続きください</p>
+    <p class="text-center"><a href="{% url 'accounts:login' %}" class="button">ログイン</a></p>
+  </div>
+</div>
+
+{% endblock %}

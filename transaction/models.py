@@ -5,8 +5,8 @@ from django.utils.translation import gettext_lazy as _
 
 class Request(models.Model):
     item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('item'))
-    buyer = models.ForeignKey('accounts.Member', on_delete=models.CASCADE, verbose_name=_('buyer'))
-    buyer_address = models.ForeignKey('accounts.MemberAddress', on_delete=models.CASCADE, verbose_name=_('buyer\'s address'), blank=True, null=True)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('buyer'))
+    user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('buyer\'s address'), blank=True, null=True)
     title = models.CharField(_('name'), max_length=50)
     description = models.TextField(_('description'), blank=True)
     delivery_method = models.SmallIntegerField(_('delivery request'))
@@ -27,8 +27,8 @@ class Request(models.Model):
 
 class Agreement(models.Model):
     request = models.OneToOneField('Request', on_delete=models.CASCADE, verbose_name=_('request'))
-    seller = models.ForeignKey('accounts.Member', on_delete=models.CASCADE, verbose_name=_('seller'))
-    seller_address = models.ForeignKey('accounts.MemberAddress', on_delete=models.CASCADE, verbose_name=_('seller\'s address'), blank=True, null=True)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('seller'))
+    user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('seller\'s address'), blank=True, null=True)
     price = models.IntegerField(_('price request'), blank=True)
     postage = models.IntegerField(_('postage'), default=0)
     arriving_at = models.DateTimeField(_('arriving at'))

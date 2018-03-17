@@ -65,7 +65,7 @@ class ItemImage(models.Model):
 
 class ItemLike(models.Model):
     item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('item'))
-    member = models.ForeignKey('accounts.Member', on_delete=models.CASCADE, verbose_name=_('member'))
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('user'))
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
@@ -74,4 +74,4 @@ class ItemLike(models.Model):
         verbose_name_plural = _('item likes')
 
     def __str__(self):
-        return '%s' % self.item__name + ': ' + self.member__user__username
+        return '%s' % self.item__name + ': ' + self.user__username

@@ -20,8 +20,6 @@ class UserManager(BaseUserManager):
         """
         if not username:
             raise ValueError('The given username must be set')
-        if not email:
-            raise ValueError('The given email must be set')
         email = self.normalize_email(email)
         username = self.model.normalize_username(username)
         user = self.model(username=username, email=email, **extra_fields)
@@ -61,7 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), unique=True)
+    email = models.EmailField(_('email address'), unique=True, blank=True, null=True)
     phone_number = models.CharField(_('電話番号'), validators=[tel_number_regex], max_length=15, unique=True, blank=True, null=True)
     uuid = models.UUIDField('UUID', primary_key=False, blank=True, null=True)
     uuid_deadline = models.DateTimeField(_('UUID deadline'), blank=True, null=True)
@@ -79,6 +77,24 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
+    birthday = models.DateField(_('birthday'), blank=True, null=True)
+    profession = models.CharField(_('profession'), max_length=50, blank=True)
+    line_id = models.CharField(_('LINE ID'), max_length=255, blank=True, null=True, unique=True)
+    twitter_id = models.CharField(_('Twitter ID'), max_length=255, blank=True, null=True, unique=True)
+    instagram_id = models.CharField(_('Instagram ID'), max_length=255, blank=True, null=True, unique=True)
+    facebook_id = models.CharField(_('Facebook ID'), max_length=255, blank=True, null=True, unique=True)
+    whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, null=True, unique=True)
+    kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, null=True, unique=True)
+    wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, null=True, unique=True)
+    level = models.SmallIntegerField(_('user level'), default=1)
+    notice = models.BooleanField(_('notice'), default=False)
+    email_verified = models.BooleanField(_('email verified'), default=False)
+    social_confirm_deadline = models.DateTimeField(_('social confirm deadline'), blank=True, null=True)
+    is_traveller = models.BooleanField(_('traveller'), default=False)
+    is_banned = models.BooleanField(_('banned'), default=False)
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
     objects = UserManager()
 
@@ -109,35 +125,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-class Member(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE, related_name='member', verbose_name=_('user'))
-    jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
-    birthday = models.DateField(_('birthday'), blank=True, null=True)
-    profession = models.CharField(_('profession'), max_length=50, blank=True)
-    line_id = models.CharField(_('LINE ID'), max_length=255, blank=True, null=True, unique=True)
-    twitter_id = models.CharField(_('Twitter ID'), max_length=255, blank=True, null=True, unique=True)
-    instagram_id = models.CharField(_('Instagram ID'), max_length=255, blank=True, null=True, unique=True)
-    facebook_id = models.CharField(_('Facebook ID'), max_length=255, blank=True, null=True, unique=True)
-    whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, null=True, unique=True)
-    kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, null=True, unique=True)
-    wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, null=True, unique=True)
-    level = models.SmallIntegerField(_('member level'), default=1)
-    notice = models.BooleanField(_('notice'), default=False)
-    is_verified = models.BooleanField(_('verified'), default=False)
-    is_traveller = models.BooleanField(_('traveller'), default=False)
-    is_banned = models.BooleanField(_('banned'), default=False)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
-
-    class Meta:
-        verbose_name = _('member')
-        verbose_name_plural = _('members')
-
-    def __str__(self):
-        return '%s' % self.user.username
-
-class MemberAddress(models.Model):
-    member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
+class UserAddress(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('user'))
     district = models.ForeignKey('meta.District', on_delete=models.CASCADE, verbose_name=_('district'))
     postal_code = models.CharField(_('postal code'), max_length=9)
     address1 = models.CharField(_('address1'), max_length=255)
@@ -149,14 +138,14 @@ class MemberAddress(models.Model):
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
     class Meta:
-        verbose_name = _('member\'s address')
-        verbose_name_plural = _('member\'s addresses')
+        verbose_name = _('user\'s address')
+        verbose_name_plural = _('user\'s addresses')
 
     def __str__(self):
         return '%s' % self.district.name
 
 class Itinerary(models.Model):
-    member = models.ForeignKey('Member', on_delete=models.CASCADE, verbose_name=_('member'))
+    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('user'))
     purpose = models.SmallIntegerField(_('purpose'))
     description = models.TextField(_('description'), blank=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
@@ -167,7 +156,7 @@ class Itinerary(models.Model):
         verbose_name_plural = _('itineraries')
 
     def __str__(self):
-        return '%s' % self.member.name
+        return '%s' % self.user.name
 
 class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('itinerary'))

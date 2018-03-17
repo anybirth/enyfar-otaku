@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar ログイン{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">ソーシャル連携</h1>
+    <p class="text-center"><a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'accounts:associate_complete' %}" class="button {% for s in request.user.social_auth.all %}{% if s.provider == 'google-oauth2' %}disabled{% endif %}{% endfor %}">Googleと連携</a></p>
+    <p class="text-center"><a href="{% url 'social:begin' 'facebook' %}?next={% url 'accounts:associate_complete' %}" class="button {% for s in request.user.social_auth.all %}{% if s.provider == 'facebook' %}disabled{% endif %}{% endfor %}">Facebookと連携</a></p>
+    <p class="text-center"><a href="{% url 'social:begin' 'twitter' %}?next={% url 'accounts:associate_complete' %}" class="button {% for s in request.user.social_auth.all %}{% if s.provider == 'twitter' %}disabled{% endif %}{% endfor %}">Twitterと連携</a></p>
+    <p class="text-center"><a href="{% url 'social:begin' 'line' %}?next={% url 'accounts:associate_complete' %}" class="button {% for s in request.user.social_auth.all %}{% if s.provider == 'line' %}disabled{% endif %}{% endfor %}">LINEと連携</a></p>
+    <p class="text-center"><a href="" class="button">Yahooと連携</a></p>
+  </div>
+</div>
+
+<script>
+$('.disabled').click(function(e){
+  return false;
+});
+</script>
+{% endblock %}
