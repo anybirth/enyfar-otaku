@@ -61,7 +61,7 @@ class EmailSignupView(generic.CreateView):
             u'仮登録完了',
             u'仮登録が完了しました。\n' +
             '以下のURLより本登録を完了させてください。\n\n' +
-            protocol + host_name + reverse_lazy('accounts:activate', args=[user.uuid,]),
+            protocol + host_name + str(reverse_lazy('accounts:activate', args=[user.uuid,])),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
@@ -171,7 +171,7 @@ class ActivateErrorView(generic.FormView):
         send_mail(
             u'再認証メール',
             u'以下のURLより本登録を完了させてください。\n\n' +
-            protocol + host_name + reverse_lazy('accounts:activate', args=[user.uuid,]),
+            protocol + host_name + str(reverse_lazy('accounts:activate', args=[user.uuid,])),
             'info@anybirth.co.jp',
             [user.email],
             fail_silently=False,
