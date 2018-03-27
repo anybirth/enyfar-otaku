@@ -25,8 +25,8 @@ class CustomUserChangeForm(UserChangeForm):
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'email', 'phone_number', 'uuid', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'phone_number', 'uuid',  'jender', 'birthday', 'profession', 'line_id', 'twitter_id', 'instagram_id', 'facebook_id', 'whatsapp_id', 'kik_id', 'wechat_id', 'level', 'notice', 'uuid_deadline', 'social_confirm_deadline')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'email_verified', 'is_traveller', 'is_banned',
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'jender', 'birthday', 'profession', 'line_id', 'twitter_id', 'instagram_id', 'facebook_id', 'whatsapp_id', 'kik_id', 'wechat_id', 'level', 'notice', 'email_verified', 'is_traveller', 'is_banned', 'uuid_deadline', 'social_confirm_deadline')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
