@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 class Proposal(models.Model):
     item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    itinerary = models.ForeignKey('accounts.Itinerary', on_delete=models.CASCADE, verbose_name=_('旅程ID'))
     title = models.CharField(_('提案タイトル'), max_length=50)
     description = models.TextField(_('提案説明文'), blank=True)
     delivery_method = models.SmallIntegerField(_('配送方法'))
