@@ -75,3 +75,20 @@ class ItemLike(models.Model):
 
     def __str__(self):
         return '%s' % self.item__name + ': ' + self.user__username
+
+class ItemRecommendation(models.Model):
+    item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    price = models.IntegerField(_('価格'))
+    quantity = models.IntegerField(_('商品数'))
+    description = models.TextField(_('説明文'), blank=True)
+    expired_at = models.DateTimeField(_('掲載終了日'), blank=True)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('商品提案')
+        verbose_name_plural = _('商品提案')
+
+    def __str__(self):
+        return '%s' % self.item.name
