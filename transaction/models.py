@@ -37,7 +37,7 @@ class Request(models.Model):
     payment_method = models.SmallIntegerField(_('支払方法'))
     price_request = models.IntegerField(_('希望価格'), blank=True)
     hand_place = models.CharField(_('商品手渡し場所'), max_length=255, blank=True)
-    delivered_request　= models.DateTimeField(_('希望お届け日時'), blank=True, null=True)
+    delivered_request = models.DateTimeField(_('希望お届け日時'), blank=True, null=True)
     status = models.SmallIntegerField(_('状態'), default=0)
     expired_at = models.DateTimeField(_('掲載終了日'), blank=True)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
