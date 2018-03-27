@@ -3,4 +3,4 @@ from . import models
 
 # Register your models here.
 
-admin.site.register([models.Category, models.Tag, models.Item, models.ItemImage, models.ItemLike,])
+admin.site.register([models.Category, models.Tag, models.Item, models.ItemImage, models.ItemLike, models.ItemRecommendation])
