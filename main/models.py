@@ -4,74 +4,74 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 class Category(models.Model):
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('user'))
-    name = models.CharField(_('name'), max_length=50, unique=True)
-    status = models.SmallIntegerField(_('status'), default=0)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    name = models.CharField(_('カテゴリー名'), max_length=50, unique=True)
+    status = models.SmallIntegerField(_('状態'), default=0)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('category')
-        verbose_name_plural = _('categories')
+        verbose_name = _('カテゴリー')
+        verbose_name_plural = _('カテゴリー')
 
     def __str__(self):
         return '%s' % self.name
 
 class Tag(models.Model):
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('user'))
-    name = models.CharField(_('name'), max_length=50, unique=True)
-    status = models.SmallIntegerField(_('status'), default=0)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    name = models.CharField(_('タグ名'), max_length=50, unique=True)
+    status = models.SmallIntegerField(_('状態'), default=0)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('tag')
-        verbose_name_plural = _('tags')
+        verbose_name = _('タグ')
+        verbose_name_plural = _('タグ')
 
     def __str__(self):
         return '%s' % self.name
 
 class Item(models.Model):
-    category = models.ManyToManyField('Category', verbose_name=_('category'))
-    tag = models.ManyToManyField('Tag', verbose_name=_('tag'), blank=True)
-    country = models.ForeignKey('meta.Country', on_delete=models.CASCADE, verbose_name=_('counntry'))
-    district = models.ForeignKey('meta.District', on_delete=models.CASCADE, verbose_name=_('district'), blank=True, null=True)
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('user'))
-    name = models.CharField(_('name'), max_length=50)
-    description = models.TextField(_('description'), blank=True)
-    status = models.SmallIntegerField(_('status'), default=0)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    category = models.ManyToManyField('Category', verbose_name=_('カテゴリーID'))
+    tag = models.ManyToManyField('Tag', verbose_name=_('タグID'), blank=True)
+    country = models.ForeignKey('meta.Country', on_delete=models.CASCADE, verbose_name=_('国・地域ID'))
+    district = models.ForeignKey('meta.District', on_delete=models.CASCADE, verbose_name=_('行政区画ID'), blank=True, null=True)
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    name = models.CharField(_('商品名'), max_length=50)
+    description = models.TextField(_('商品説明文'), blank=True)
+    status = models.SmallIntegerField(_('状態'), default=0)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('item')
-        verbose_name_plural = _('items')
+        verbose_name = _('商品')
+        verbose_name_plural = _('商品')
 
     def __str__(self):
         return '%s' % self.name
 
 class ItemImage(models.Model):
-    item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('item'))
-    image = models.ImageField(verbose_name=_('image'), upload_to='images/', unique=True)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
+    image_path = models.ImageField(verbose_name=_('画像パス'), upload_to='images/', unique=True)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('item image')
-        verbose_name_plural = _('item images')
+        verbose_name = _('商品画像')
+        verbose_name_plural = _('商品画像')
 
     def __str__(self):
         return '%s' % self.image.name
 
 class ItemLike(models.Model):
-    item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('item'))
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('user'))
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('item like')
-        verbose_name_plural = _('item likes')
+        verbose_name = _('いいね')
+        verbose_name_plural = _('いいね')
 
     def __str__(self):
         return '%s' % self.item__name + ': ' + self.user__username
