@@ -3,41 +3,65 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
-class Request(models.Model):
-    item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('item'))
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('buyer'))
-    user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('buyer\'s address'), blank=True, null=True)
-    title = models.CharField(_('name'), max_length=50)
-    description = models.TextField(_('description'), blank=True)
-    delivery_method = models.SmallIntegerField(_('delivery request'))
-    payment_method = models.SmallIntegerField(_('payment request'))
-    price_request = models.IntegerField(_('price request'), blank=True)
-    hand_place = models.CharField(_('hand place request'), max_length=255, blank=True)
-    status = models.SmallIntegerField(_('status'), default=0)
-    expired_at = models.DateTimeField(_('expired at'), blank=True)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+class Proposal(models.Model):
+    item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    itinerary = models.ForeignKey('accounts.Itinerary', on_delete=models.CASCADE, verbose_name=_('旅程ID'))
+    title = models.CharField(_('提案タイトル'), max_length=50)
+    description = models.TextField(_('提案説明文'), blank=True)
+    delivery_method = models.SmallIntegerField(_('配送方法'))
+    payment_method = models.SmallIntegerField(_('支払方法'))
+    price_proposal = models.IntegerField(_('価格提案'), blank=True)
+    hand_place = models.CharField(_('商品手渡し場所'), max_length=255, blank=True)
+    delivered_at = models.DateTimeField(_('予定お届け日時'), blank=True, null=True)
+    status = models.SmallIntegerField(_('状態'), default=0)
+    expired_at = models.DateTimeField(_('掲載終了日'), blank=True)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('request')
-        verbose_name_plural = _('requests')
+        verbose_name = _('提案')
+        verbose_name_plural = _('提案')
+
+    def __str__(self):
+        return '%s' % self.title
+
+class Request(models.Model):
+    item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('ユーザー住所ID'), blank=True, null=True)
+    proposal = models.OneToOneField('Proposal', on_delete=models.CASCADE, verbose_name=_('提案ID'), blank=True, null=True)
+    title = models.CharField(_('リクエストタイトル'), max_length=50)
+    description = models.TextField(_('リクエスト説明文'), blank=True)
+    delivery_method = models.SmallIntegerField(_('配送方法'))
+    payment_method = models.SmallIntegerField(_('支払方法'))
+    price_request = models.IntegerField(_('希望価格'), blank=True)
+    hand_place = models.CharField(_('商品手渡し場所'), max_length=255, blank=True)
+    delivered_request = models.DateTimeField(_('希望お届け日時'), blank=True, null=True)
+    status = models.SmallIntegerField(_('状態'), default=0)
+    expired_at = models.DateTimeField(_('掲載終了日'), blank=True)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('依頼')
+        verbose_name_plural = _('依頼')
 
     def __str__(self):
         return '%s' % self.title
 
 class Agreement(models.Model):
-    request = models.OneToOneField('Request', on_delete=models.CASCADE, verbose_name=_('request'))
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('seller'))
-    user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('seller\'s address'), blank=True, null=True)
-    price = models.IntegerField(_('price request'), blank=True)
-    postage = models.IntegerField(_('postage'), default=0)
-    arriving_at = models.DateTimeField(_('arriving at'))
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    request = models.OneToOneField('Request', on_delete=models.CASCADE, verbose_name=_('依頼ID'))
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('ユーザー住所ID'), blank=True, null=True)
+    price = models.IntegerField(_('価格'), blank=True)
+    postage = models.IntegerField(_('送料'), default=0)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('agreement')
-        verbose_name_plural = _('agreements')
+        verbose_name = _('成約')
+        verbose_name_plural = _('成約')
 
     def __str__(self):
-        return '%s' % self.request__title
+        return '%s' % self.request.title

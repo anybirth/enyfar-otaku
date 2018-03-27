@@ -57,12 +57,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             'unique': _("A user with that username already exists."),
         },
     )
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    email = models.EmailField(_('email address'), unique=True, blank=True, null=True)
+    first_name = models.CharField(_('名'), max_length=30, blank=True)
+    last_name = models.CharField(_('姓'), max_length=150, blank=True)
+    email = models.EmailField(_('メールアドレス'), unique=True, blank=True, null=True)
     phone_number = models.CharField(_('電話番号'), validators=[tel_number_regex], max_length=15, unique=True, blank=True, null=True)
-    uuid = models.UUIDField('UUID', primary_key=False, blank=True, null=True)
-    uuid_deadline = models.DateTimeField(_('UUID deadline'), blank=True, null=True)
+    uuid = models.UUIDField('ユニークID', primary_key=False, blank=True, null=True)
+    uuid_deadline = models.DateTimeField(_('ユニークID有効期限'), blank=True, null=True)
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
@@ -77,9 +77,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-    jender = models.SmallIntegerField(_('jender'), blank=True, null=True)
-    birthday = models.DateField(_('birthday'), blank=True, null=True)
-    profession = models.CharField(_('profession'), max_length=50, blank=True)
+    jender = models.SmallIntegerField(_('性別'), blank=True, null=True)
+    birthday = models.DateField(_('生年月日'), blank=True, null=True)
+    profession = models.CharField(_('職業'), max_length=50, blank=True)
     line_id = models.CharField(_('LINE ID'), max_length=255, blank=True, null=True, unique=True)
     twitter_id = models.CharField(_('Twitter ID'), max_length=255, blank=True, null=True, unique=True)
     instagram_id = models.CharField(_('Instagram ID'), max_length=255, blank=True, null=True, unique=True)
@@ -87,14 +87,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     whatsapp_id = models.CharField(_('WhatsApp ID'), max_length=255, blank=True, null=True, unique=True)
     kik_id = models.CharField(_('KIK ID'), max_length=255, blank=True, null=True, unique=True)
     wechat_id = models.CharField(_('WeChat ID'), max_length=255, blank=True, null=True, unique=True)
-    level = models.SmallIntegerField(_('user level'), default=1)
-    notice = models.BooleanField(_('notice'), default=False)
-    email_verified = models.BooleanField(_('email verified'), default=False)
-    social_confirm_deadline = models.DateTimeField(_('social confirm deadline'), blank=True, null=True)
-    is_traveller = models.BooleanField(_('traveller'), default=False)
-    is_banned = models.BooleanField(_('banned'), default=False)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    level = models.SmallIntegerField(_('ユーザーレベル'), default=1)
+    notice = models.BooleanField(_('配信の希望'), default=False)
+    email_verified = models.BooleanField(_('メールアドレス認証'), default=False)
+    is_traveller = models.BooleanField(_('トラベラーフラグ'), default=False)
+    is_banned = models.BooleanField(_('アカウント凍結'), default=False)
+    social_confirm_deadline = models.DateTimeField(_('ソーシャルログイン確認期限'), blank=True, null=True)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     objects = UserManager()
 
@@ -126,77 +126,90 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 class UserAddress(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('user'))
-    district = models.ForeignKey('meta.District', on_delete=models.CASCADE, verbose_name=_('district'))
-    postal_code = models.CharField(_('postal code'), max_length=9)
-    address1 = models.CharField(_('address1'), max_length=255)
-    address2 = models.CharField(_('address2'), max_length=255, blank=True)
-    first_name = models.CharField(_('first name'), max_length=50)
-    last_name = models.CharField(_('last name'), max_length=50)
-    is_default = models.BooleanField(_('default'), default=False)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    district = models.ForeignKey('meta.District', on_delete=models.CASCADE, verbose_name=_('行政区画ID'))
+    postal_code = models.CharField(_('郵便番号'), max_length=9)
+    address1 = models.CharField(_('住所1'), max_length=255)
+    address2 = models.CharField(_('住所2'), max_length=255, blank=True)
+    first_name = models.CharField(_('名'), max_length=50)
+    last_name = models.CharField(_('姓'), max_length=50)
+    is_default = models.BooleanField(_('デフォルトフラグ'), default=False)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('user\'s address')
-        verbose_name_plural = _('user\'s addresses')
+        verbose_name = _('ユーザー住所')
+        verbose_name_plural = _('ユーザー住所')
 
     def __str__(self):
-        return '%s' % self.district.name
+        return '%s' % self.user.username
 
 class Itinerary(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('user'))
-    purpose = models.SmallIntegerField(_('purpose'))
-    description = models.TextField(_('description'), blank=True)
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    purpose = models.SmallIntegerField(_('目的'))
+    description = models.TextField(_('備考'), blank=True)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('itinerary')
-        verbose_name_plural = _('itineraries')
+        verbose_name = _('旅程')
+        verbose_name_plural = _('旅程')
 
     def __str__(self):
-        return '%s' % self.user.name
+        return '%s' % self.user.username
 
 class Transfer(models.Model):
-    itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('itinerary'))
-    departure = models.OneToOneField('Departure', on_delete=models.CASCADE, verbose_name=_('departure'))
-    arrival = models.OneToOneField('Arrival', on_delete=models.CASCADE, verbose_name=_('arrival'))
-    ticket = models.SmallIntegerField(_('ticket'))
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('旅程ID'))
+    departure = models.OneToOneField('Departure', on_delete=models.CASCADE, verbose_name=_('出発ID'))
+    arrival = models.OneToOneField('Arrival', on_delete=models.CASCADE, verbose_name=_('到着ID'))
+    ticket = models.SmallIntegerField(_('チケット取得状況'))
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('transfer')
-        verbose_name_plural = _('transfers')
+        verbose_name = _('移動')
+        verbose_name_plural = _('移動')
 
     def __str__(self):
-        return '%s' % self.departure.district.name + ' -> ' + '%s' %  self.arrival.district.name
+        return '%s' % self.itinerary.user.username
 
-class Departure(models.Model):
-    country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('country'))
-    district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('district'))
-    departing_at = models.DateTimeField(_('departure time'))
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+class Flight(models.Model):
+    transfer = models.ForeignKey('Transfer', on_delete=models.CASCADE, verbose_name=_('移動ID'))
+    flight_number = models.CharField(_('フライトナンバー'), max_length=255)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('departure')
-        verbose_name_plural = _('departures')
+        verbose_name = _('フライト')
+        verbose_name_plural = _('フライト')
+
+    def __str__(self):
+        return '%s' % self.flight_number
+
+class Departure(models.Model):
+    country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('国・地域ID'))
+    district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('行政区画ID'))
+    departing_at = models.DateTimeField(_('出発日時'))
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('出発')
+        verbose_name_plural = _('出発')
 
     def __str__(self):
         return '%s' % self.departing_at
 
 class Arrival(models.Model):
-    country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('country'))
-    district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('district'))
-    arriving_at  = models.DateTimeField(_('arrival time'))
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+    country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('国・地域ID'))
+    district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('行政区画ID'))
+    arriving_at  = models.DateTimeField(_('到着日時'))
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
     class Meta:
-        verbose_name = _('arrival')
-        verbose_name_plural = _('arrivals')
+        verbose_name = _('到着')
+        verbose_name_plural = _('到着')
 
     def __str__(self):
         return '%s' % self.arriving_at
