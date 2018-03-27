@@ -61,7 +61,7 @@ class ItemImage(models.Model):
         verbose_name_plural = _('商品画像')
 
     def __str__(self):
-        return '%s' % self.image.name
+        return '%s' % self.image_path.name
 
 class ItemLike(models.Model):
     item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
@@ -74,7 +74,7 @@ class ItemLike(models.Model):
         verbose_name_plural = _('いいね')
 
     def __str__(self):
-        return '%s' % self.item__name + ': ' + self.user__username
+        return '%s' % self.item.name + ': ' + self.user.username
 
 class ItemRecommendation(models.Model):
     item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))

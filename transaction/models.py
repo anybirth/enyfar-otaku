@@ -23,7 +23,7 @@ class Proposal(models.Model):
         verbose_name_plural = _('提案')
 
     def __str__(self):
-        return '%s' % self.item.name
+        return '%s' % self.title
 
 class Request(models.Model):
     item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
@@ -63,4 +63,4 @@ class Agreement(models.Model):
         verbose_name_plural = _('成約')
 
     def __str__(self):
-        return '%s' % self.request__title
+        return '%s' % self.request.title

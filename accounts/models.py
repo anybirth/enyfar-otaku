@@ -142,7 +142,7 @@ class UserAddress(models.Model):
         verbose_name_plural = _('ユーザー住所')
 
     def __str__(self):
-        return '%s' % self.district.name
+        return '%s' % self.user.username
 
 class Itinerary(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
@@ -156,7 +156,7 @@ class Itinerary(models.Model):
         verbose_name_plural = _('旅程')
 
     def __str__(self):
-        return '%s' % self.user.name
+        return '%s' % self.user.username
 
 class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('旅程ID'))
@@ -171,7 +171,7 @@ class Transfer(models.Model):
         verbose_name_plural = _('移動')
 
     def __str__(self):
-        return '%s' % self.departure.district.name + ' -> ' + '%s' %  self.arrival.district.name
+        return '%s' % self.itinerary.user.username
 
 class Flight(models.Model):
     transfer = models.ForeignKey('Transfer', on_delete=models.CASCADE, verbose_name=_('移動ID'))
@@ -184,7 +184,7 @@ class Flight(models.Model):
         verbose_name_plural = _('フライト')
 
     def __str__(self):
-        return '%s' % self.departure.district.name + ' -> ' + '%s' %  self.arrival.district.name
+        return '%s' % self.flight_number
 
 class Departure(models.Model):
     country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('国・地域ID'))
