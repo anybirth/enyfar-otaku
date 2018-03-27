@@ -173,6 +173,19 @@ class Transfer(models.Model):
     def __str__(self):
         return '%s' % self.departure.district.name + ' -> ' + '%s' %  self.arrival.district.name
 
+class Flight(models.Model):
+    transfer = models.ForeignKey('Transfer', on_delete=models.CASCADE, verbose_name=_('移動ID'))
+    flight_number = models.CharField(_('フライトナンバー'), max_length=255)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('フライト')
+        verbose_name_plural = _('フライト')
+
+    def __str__(self):
+        return '%s' % self.departure.district.name + ' -> ' + '%s' %  self.arrival.district.name
+
 class Departure(models.Model):
     country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('国・地域ID'))
     district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('行政区画ID'))
