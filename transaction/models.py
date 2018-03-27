@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 class Proposal(models.Model):
-    item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
+    item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
     title = models.CharField(_('提案タイトル'), max_length=50)
     description = models.TextField(_('提案説明文'), blank=True)
@@ -12,7 +12,7 @@ class Proposal(models.Model):
     payment_method = models.SmallIntegerField(_('支払方法'))
     price_proposal = models.IntegerField(_('価格提案'), blank=True)
     hand_place = models.CharField(_('商品手渡し場所'), max_length=255, blank=True)
-    delivered_at　= models.DateTimeField(_('予定お届け日時'), blank=True, null=True)
+    delivered_at = models.DateTimeField(_('予定お届け日時'), blank=True, null=True)
     status = models.SmallIntegerField(_('状態'), default=0)
     expired_at = models.DateTimeField(_('掲載終了日'), blank=True)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
