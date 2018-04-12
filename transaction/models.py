@@ -26,6 +26,30 @@ class Proposal(models.Model):
     def __str__(self):
         return '%s' % self.title
 
+class Order(models.Model):
+    item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
+    user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('ユーザー住所ID'), blank=True, null=True)
+    proposal = models.OneToOneField('Proposal', on_delete=models.CASCADE, verbose_name=_('提案ID'), blank=True, null=True)
+    title = models.CharField(_('依頼タイトル'), max_length=50)
+    description = models.TextField(_('依頼説明文'), blank=True)
+    delivery_method = models.SmallIntegerField(_('配送方法'))
+    payment_method = models.SmallIntegerField(_('支払方法'))
+    price_order = models.IntegerField(_('希望価格'), blank=True)
+    hand_place = models.CharField(_('商品手渡し場所'), max_length=255, blank=True)
+    delivered_order = models.DateTimeField(_('希望お届け日時'), blank=True, null=True)
+    status = models.SmallIntegerField(_('状態'), default=0)
+    expired_at = models.DateTimeField(_('掲載終了日'), blank=True)
+    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('依頼')
+        verbose_name_plural = _('依頼')
+
+    def __str__(self):
+        return '%s' % self.title
+
 class Request(models.Model):
     item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
