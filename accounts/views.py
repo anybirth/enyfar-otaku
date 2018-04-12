@@ -16,7 +16,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.hashers import make_password
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from transaction.models import Request
+from transaction.models import Order
 from . import models
 from . import forms
 
@@ -194,9 +194,9 @@ class LogoutView(auth_views.LogoutView):
 
 @method_decorator(login_required, name='dispatch')
 class ProfileView(generic.ListView):
-    model = Request
+    model = Order
     template_name = 'accounts/profile.html'
-    context_object_name = 'requests'
+    context_object_name = 'orders'
 
     def get(self, request):
         user = request.user
@@ -206,9 +206,9 @@ class ProfileView(generic.ListView):
 
 @method_decorator(login_required, name='dispatch')
 class ProfileTravellerView(generic.ListView):
-    model = Request
+    model = Order
     template_name = 'accounts/profile_traveller.html'
-    context_object_name = 'requests'
+    context_object_name = 'orders'
 
     def get(self, request):
         user = request.user
