@@ -25,8 +25,8 @@ class OrderForm(forms.ModelForm):
             'delivered_order': forms.SelectDateWidget(
                 years = range(timezone.now().year, timezone.now().year + 2),
                 months = {
-                    1: _(str(timezone.now().month)),
-                    2: _(str(timezone.now().month + 1)),
+                    timezone.now().month: _(str(timezone.now().month)),
+                    timezone.now().month + 1: _(str(timezone.now().month + 1)),
                 },
                 empty_label=("年", "月", "日"),
             ),
