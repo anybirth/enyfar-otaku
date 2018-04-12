@@ -34,6 +34,7 @@ class Order(models.Model):
     uuid = models.UUIDField('ユニークID', primary_key=False)
     title = models.CharField(_('依頼タイトル'), max_length=50)
     description = models.TextField(_('依頼説明文'), blank=True)
+    number = models.IntegerField(_('個数'))
     delivery_method = models.SmallIntegerField(_('配送方法'))
     payment_method = models.SmallIntegerField(_('支払方法'))
     price_order = models.IntegerField(_('希望価格'), blank=True)
