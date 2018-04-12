@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar 会員登録{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">依頼確認</h1>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>個数</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.number }}</p>
+      </div>
+    </div>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>配送希望日</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.delivered_order }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

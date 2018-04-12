@@ -38,3 +38,10 @@ class OrderView(generic.CreateView):
             fail_silently=False,
         )
         return super().form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class OrderConfirmView(generic.DetailView):
+    model = models.Order
+    slug_field = 'uuid'
+    context_object_name = 'order'
+    template_name = 'transaction/order_confirm.html'
