@@ -75,6 +75,7 @@ class Request(models.Model):
         return '%s' % self.title
 
 class Agreement(models.Model):
+    order = models.OneToOneField('Order', on_delete=models.CASCADE, verbose_name=_('依頼ID'))
     request = models.OneToOneField('Request', on_delete=models.CASCADE, verbose_name=_('依頼ID'))
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
     user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('ユーザー住所ID'), blank=True, null=True)
@@ -88,4 +89,4 @@ class Agreement(models.Model):
         verbose_name_plural = _('成約')
 
     def __str__(self):
-        return '%s' % self.request.title
+        return '%s' % self.order.title
