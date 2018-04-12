@@ -31,6 +31,7 @@ class Order(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
     user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('ユーザー住所ID'), blank=True, null=True)
     proposal = models.OneToOneField('Proposal', on_delete=models.CASCADE, verbose_name=_('提案ID'), blank=True, null=True)
+    uuid = models.UUIDField('ユニークID', primary_key=False)
     title = models.CharField(_('依頼タイトル'), max_length=50)
     description = models.TextField(_('依頼説明文'), blank=True)
     delivery_method = models.SmallIntegerField(_('配送方法'))
