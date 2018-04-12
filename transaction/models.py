@@ -40,7 +40,7 @@ class Order(models.Model):
     price_order = models.IntegerField(_('希望価格'), blank=True, null=True)
     hand_place = models.CharField(_('商品手渡し場所'), max_length=255, blank=True)
     delivered_order = models.DateTimeField(_('希望お届け日時'), blank=True, null=True)
-    status = models.SmallIntegerField(_('状態'), default=0)
+    status = models.SmallIntegerField(_('状態'), default=1)
     expired_at = models.DateTimeField(_('掲載終了日'), blank=True, null=True)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
