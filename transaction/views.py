@@ -1,9 +1,11 @@
+import datetime
 import uuid
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from . import models, forms
@@ -28,6 +30,7 @@ class OrderView(generic.CreateView):
         order.item = get_object_or_404(Item, pk=1)
         # order.item = get_object_or_404(Item, pk=self.request.GET.get('item'))
         order.uuid = self._uuid
+        order.status_deadline = timezone.now() + datetime.timedelta(hours=1)
         order.save()
         return super().form_valid(form)
 
@@ -40,3 +43,18 @@ class OrderConfirmView(generic.DetailView):
     slug_field = 'uuid'
     context_object_name = 'order'
     template_name = 'transaction/order_confirm.html'
+
+@method_decorator(login_required, name='dispatch')
+class OrderCompleteView(generic.DetailView):
+    model = models.Order
+    slug_field = 'uuid'
+    context_object_name = 'order'
+    template_name = 'transaction/order_complete.html'
+
+    def get(self, request, slug):
+        order = get_object_or_404(models.Order, uuid=slug, status=1)
+        order.status = 2
+        order.status_deadline = None
+        order.save()
+        models.Order.objects.filter(status_deadline__lte=timezone.now()).delete()
+        return super().get(request, slug)
