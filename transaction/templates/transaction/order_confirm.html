@@ -22,6 +22,7 @@
         <p>{{ order.delivered_order }}</p>
       </div>
     </div>
+    <p class="text-center"><a href="{% url 'transaction:order_complete' order.uuid %}" class="button">依頼</a></p>
   </div>
 </div>
 
