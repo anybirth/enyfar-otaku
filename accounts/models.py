@@ -160,9 +160,12 @@ class Itinerary(models.Model):
 
 class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('旅程ID'))
-    departure = models.OneToOneField('Departure', on_delete=models.CASCADE, verbose_name=_('出発ID'))
-    arrival = models.OneToOneField('Arrival', on_delete=models.CASCADE, verbose_name=_('到着ID'))
+    departure_country = models.ForeignKey('meta.Country', on_delete=models.CASCADE, related_name='departure_country_set', verbose_name=_('出発国・地域ID'))
+    departure_district = models.ForeignKey('meta.District', on_delete=models.CASCADE, related_name='departure_district_set', verbose_name=_('出発行政区画ID'))
+    arrival_country = models.ForeignKey('meta.Country', on_delete=models.CASCADE, related_name='arrival_country_set', verbose_name=_('到着国・地域ID'))
+    arrival_district = models.ForeignKey('meta.District', on_delete=models.CASCADE, related_name='arrival_district_set', verbose_name=_('到着行政区画ID'))
     ticket = models.SmallIntegerField(_('チケット取得状況'))
+    flight_number = models.CharField(_('フライトナンバー'), max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
@@ -172,44 +175,3 @@ class Transfer(models.Model):
 
     def __str__(self):
         return '%s' % self.itinerary.user.username
-
-class Flight(models.Model):
-    transfer = models.ForeignKey('Transfer', on_delete=models.CASCADE, verbose_name=_('移動ID'))
-    flight_number = models.CharField(_('フライトナンバー'), max_length=255)
-    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
-
-    class Meta:
-        verbose_name = _('フライト')
-        verbose_name_plural = _('フライト')
-
-    def __str__(self):
-        return '%s' % self.flight_number
-
-class Departure(models.Model):
-    country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('国・地域ID'))
-    district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('行政区画ID'))
-    departing_at = models.DateTimeField(_('出発日時'))
-    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
-
-    class Meta:
-        verbose_name = _('出発')
-        verbose_name_plural = _('出発')
-
-    def __str__(self):
-        return '%s' % self.departing_at
-
-class Arrival(models.Model):
-    country = models.OneToOneField('meta.Country', on_delete=models.CASCADE, verbose_name=_('国・地域ID'))
-    district = models.OneToOneField('meta.District', on_delete=models.CASCADE, verbose_name=_('行政区画ID'))
-    arriving_at  = models.DateTimeField(_('到着日時'))
-    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
-
-    class Meta:
-        verbose_name = _('到着')
-        verbose_name_plural = _('到着')
-
-    def __str__(self):
-        return '%s' % self.arriving_at
