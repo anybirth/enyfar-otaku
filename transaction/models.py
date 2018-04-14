@@ -41,6 +41,7 @@ class Order(models.Model):
     hand_place = models.CharField(_('商品手渡し場所'), max_length=255, blank=True)
     delivered_order = models.DateTimeField(_('希望お届け日時'), blank=True, null=True)
     status = models.SmallIntegerField(_('状態'), default=1)
+    status_deadline = models.DateTimeField(_('状態有効期限'), blank=True, null=True)
     expired_at = models.DateTimeField(_('掲載終了日'), blank=True, null=True)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
