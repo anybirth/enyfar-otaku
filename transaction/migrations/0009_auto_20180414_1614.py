@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='order',
             name='requester',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='requester_set', to=settings.AUTH_USER_MODEL, verbose_name='リクエスターID'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='requester_set', to=settings.AUTH_USER_MODEL, verbose_name='リクエスターID'),
             preserve_default=False,
         ),
         migrations.AddField(
