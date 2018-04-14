@@ -162,7 +162,12 @@ class Transfer(models.Model):
     itinerary = models.ForeignKey('Itinerary', on_delete=models.CASCADE, verbose_name=_('旅程ID'))
     departure = models.OneToOneField('Departure', on_delete=models.CASCADE, verbose_name=_('出発ID'))
     arrival = models.OneToOneField('Arrival', on_delete=models.CASCADE, verbose_name=_('到着ID'))
+    departure_country = models.ForeignKey('meta.Country', on_delete=models.CASCADE, related_name='departure_country_set', verbose_name=_('出発国・地域ID'))
+    departure_district = models.ForeignKey('meta.District', on_delete=models.CASCADE, related_name='departure_district_set', verbose_name=_('出発行政区画ID'))
+    arrival_country = models.ForeignKey('meta.Country', on_delete=models.CASCADE, related_name='arrival_country_set', verbose_name=_('到着国・地域ID'))
+    arrival_district = models.ForeignKey('meta.District', on_delete=models.CASCADE, related_name='arrival_district_set', verbose_name=_('到着行政区画ID'))
     ticket = models.SmallIntegerField(_('チケット取得状況'))
+    flight_number = models.CharField(_('フライトナンバー'), max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
