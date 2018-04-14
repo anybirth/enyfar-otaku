@@ -3,4 +3,4 @@ from . import models
 
 # Register your models here.
 
-admin.site.register([models.Proposal, models.Order, models.Agreement,])
+admin.site.register([models.Proposal, models.Order,])
