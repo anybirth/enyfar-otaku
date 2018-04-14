@@ -24,7 +24,7 @@ class Proposal(models.Model):
         verbose_name_plural = _('提案')
 
     def __str__(self):
-        return '%s' % self.title
+        return '%s' % self.user.username
 
 class Order(models.Model):
     item = models.ForeignKey('main.Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
@@ -50,7 +50,7 @@ class Order(models.Model):
         verbose_name_plural = _('依頼')
 
     def __str__(self):
-        return '%s' % self.title
+        return '%s' % self.user.username
 
 class Agreement(models.Model):
     order = models.OneToOneField('Order', on_delete=models.CASCADE, verbose_name=_('依頼ID'))
@@ -66,4 +66,4 @@ class Agreement(models.Model):
         verbose_name_plural = _('成約')
 
     def __str__(self):
-        return '%s' % self.order.title
+        return '%s' % self.order.user.username
