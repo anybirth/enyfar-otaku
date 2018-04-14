@@ -55,19 +55,3 @@ class Order(models.Model):
 
     def __str__(self):
         return '%s' % self.user.username
-
-class Agreement(models.Model):
-    order = models.OneToOneField('Order', on_delete=models.CASCADE, verbose_name=_('依頼ID'))
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
-    user_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('ユーザー住所ID'), blank=True, null=True)
-    price = models.IntegerField(_('価格'), blank=True)
-    postage = models.IntegerField(_('送料'), default=0)
-    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
-
-    class Meta:
-        verbose_name = _('成約')
-        verbose_name_plural = _('成約')
-
-    def __str__(self):
-        return '%s' % self.order.user.username
