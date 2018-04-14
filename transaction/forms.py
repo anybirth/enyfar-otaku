@@ -6,7 +6,7 @@ from . import models
 class OrderForm(forms.ModelForm):
     class Meta:
         model = models.Order
-        fields = ['number', 'delivered_order']
+        fields = ['number', 'delivered_at_order']
         widgets = {
             'number': forms.Select(
                 choices = (
@@ -22,7 +22,7 @@ class OrderForm(forms.ModelForm):
                     ('10', _('10+')),
                 )
             ),
-            'delivered_order': forms.SelectDateWidget(
+            'delivered_at_order': forms.SelectDateWidget(
                 years = range(timezone.now().year, timezone.now().year + 2),
                 months = {
                     timezone.now().month: _(str(timezone.now().month)),
@@ -35,6 +35,6 @@ class OrderForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        for fieldname in ['number', 'delivered_order']:
+        for fieldname in ['number', 'delivered_at_order']:
             self.fields[fieldname].help_text = None
             self.fields[fieldname].required = True

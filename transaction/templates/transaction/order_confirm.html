@@ -19,7 +19,7 @@
         <p>配送希望日</p>
       </div>
       <div class="cell small-8">
-        <p>{{ order.delivered_order }}</p>
+        <p>{{ order.delivered_at_order }}</p>
       </div>
     </div>
     <p class="text-center"><a href="{% url 'transaction:order_complete' order.uuid %}" class="button">依頼</a></p>
