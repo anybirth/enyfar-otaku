@@ -143,17 +143,3 @@ class UserAddress(models.Model):
 
     def __str__(self):
         return '%s' % self.user.username
-
-class Itinerary(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
-    purpose = models.SmallIntegerField(_('目的'))
-    description = models.TextField(_('備考'), blank=True)
-    created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
-
-    class Meta:
-        verbose_name = _('旅程')
-        verbose_name_plural = _('旅程')
-
-    def __str__(self):
-        return '%s' % self.user.username
