@@ -30,4 +30,4 @@ class Order(models.Model):
         verbose_name_plural = _('依頼')
 
     def __str__(self):
-        return '%s' % self.user.username
+        return '%s' % self.requester.username
