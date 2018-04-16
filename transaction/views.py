@@ -45,11 +45,11 @@ class OrderConfirmView(generic.DetailView):
     template_name = 'transaction/order_confirm.html'
 
 @method_decorator(login_required, name='dispatch')
-class OrderCompleteView(generic.DetailView):
+class OrderSentView(generic.DetailView):
     model = models.Order
     slug_field = 'uuid'
     context_object_name = 'order'
-    template_name = 'transaction/order_complete.html'
+    template_name = 'transaction/order_sent.html'
 
     def get(self, request, slug):
         order = get_object_or_404(models.Order, uuid=slug, status=1)

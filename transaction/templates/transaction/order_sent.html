@@ -5,7 +5,8 @@
 
 <div class="grid-x">
   <div class="cell small-10 small-offset-1">
-    <h1 class="text-center">依頼確認</h1>
+    <h1 class="text-center">依頼完了</h1>
+    <p class="text-center">依頼が送信されました</p>
     <div class="grid-x">
       <div class="cell small-4">
         <p>個数</p>
@@ -22,7 +23,6 @@
         <p>{{ order.delivered_at_order }}</p>
       </div>
     </div>
-    <p class="text-center"><a href="{% url 'transaction:order_sent' order.uuid %}" class="button">依頼</a></p>
   </div>
 </div>
 

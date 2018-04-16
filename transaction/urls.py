@@ -5,5 +5,5 @@ app_name = 'transaction'
 urlpatterns = [
     path('order/', views.OrderView.as_view(), name='order'),
     path('order/confirm/<uuid:slug>/', views.OrderConfirmView.as_view(), name='order_confirm'),
-    path('order/complete/<uuid:slug>/', views.OrderCompleteView.as_view(), name='order_complete'),
+    path('order/sent/<uuid:slug>/', views.OrderSentView.as_view(), name='order_sent'),
 ]
