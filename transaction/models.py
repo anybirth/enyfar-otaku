@@ -31,7 +31,6 @@ class Order(models.Model):
     requester = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='requester_set', verbose_name=_('リクエスターID'))
     traveller = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='traveller_set', verbose_name=_('トラベラーID'), blank=True, null=True)
     requester_address = models.ForeignKey('accounts.UserAddress', on_delete=models.CASCADE, verbose_name=_('リクエスター住所ID'), blank=True, null=True)
-    proposal = models.OneToOneField('Proposal', on_delete=models.CASCADE, verbose_name=_('提案ID'), blank=True, null=True)
     uuid = models.UUIDField('ユニークID', primary_key=False)
     title = models.CharField(_('リクエストタイトル'), max_length=50, blank=True)
     description = models.TextField(_('リクエスト説明文'), blank=True)
