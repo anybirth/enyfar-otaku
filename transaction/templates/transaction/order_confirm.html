@@ -45,7 +45,7 @@
         <p>配送希望日</p>
       </div>
       <div class="cell small-8">
-        <p>{{ order.delivered_at_order }}</p>
+        <p>{{ order.delivered_at_order.year }}年{{ order.delivered_at_order.month }}月{{ order.delivered_at_order.day }}日</p>
       </div>
     </div>
     <p class="text-center"><a href="{% url 'transaction:order_sent' order.uuid %}" class="button">依頼</a></p>
