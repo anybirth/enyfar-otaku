@@ -9,6 +9,32 @@
     <p class="text-center">依頼が承認されました</p>
     <div class="grid-x">
       <div class="cell small-4">
+        <p>商品名</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.item.name }}</p>
+      </div>
+    </div>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>国・地域</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.item.country }}</p>
+      </div>
+    </div>
+    {% if item.district != None %}
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>都道府県・州</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.item.district }}</p>
+      </div>
+    </div>
+    {% endif %}
+    <div class="grid-x">
+      <div class="cell small-4">
         <p>個数</p>
       </div>
       <div class="cell small-8">

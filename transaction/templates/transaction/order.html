@@ -6,6 +6,32 @@
 <div class="grid-x">
   <div class="cell small-10 small-offset-1">
     <h1 class="text-center">依頼</h1>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>商品名</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ item.name }}</p>
+      </div>
+    </div>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>国・地域</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ item.country }}</p>
+      </div>
+    </div>
+    {% if item.district != None %}
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>都道府県・州</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ item.district }}</p>
+      </div>
+    </div>
+    {% endif %}
     <form action="" method="post">
       {{ form }}
       {% csrf_token %}

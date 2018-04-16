@@ -23,6 +23,12 @@ class OrderView(generic.CreateView):
     def __init__(self):
         self._uuid = str(uuid.uuid4())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['item'] = get_object_or_404(Item, pk=1)
+        # context['item'] = get_object_or_404(Item, pk=self.request.GET.get('item'))
+        return context
+
     def form_valid(self, form):
         user = self.request.user
         order = form.save(commit=False)
