@@ -70,3 +70,7 @@ class OrderAcceptedView(generic.DetailView):
     model = models.Order
     context_object_name = 'order'
     template_name = 'transaction/order_accepted.html'
+
+    def get(self, request, slug):
+        order = get_object_or_404(models.Order, uuid=slug, status=3)
+        return super().get(request, slug)
