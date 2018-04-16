@@ -58,3 +58,9 @@ class OrderSentView(generic.DetailView):
         order.save()
         models.Order.objects.filter(status_deadline__lte=timezone.now()).delete()
         return super().get(request, slug)
+
+class OrderAcceptedView(generic.DetailView):
+    slug_field = 'uuid'
+    model = models.Order
+    context_object_name = 'order'
+    template_name = 'transaction/order_accepted.html'

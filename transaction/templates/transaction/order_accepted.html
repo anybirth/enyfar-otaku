@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">依頼承認</h1>
+    <p class="text-center">依頼が承認されました</p>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>個数</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.number }}</p>
+      </div>
+    </div>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>配送希望日</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.delivered_at_order }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
