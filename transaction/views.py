@@ -26,7 +26,7 @@ class OrderView(generic.CreateView):
     def form_valid(self, form):
         user = self.request.user
         order = form.save(commit=False)
-        order.user = user
+        order.requester = user
         order.item = get_object_or_404(Item, pk=1)
         # order.item = get_object_or_404(Item, pk=self.request.GET.get('item'))
         order.uuid = self._uuid
