@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from . import models
@@ -38,3 +39,13 @@ class OrderForm(forms.ModelForm):
         for fieldname in ['number', 'delivered_at_order']:
             self.fields[fieldname].help_text = None
             self.fields[fieldname].required = True
+
+class DeliveryMethodForm(forms.ModelForm):
+    class Meta:
+        model = models.Order
+        fields = ['delivery_method']
+        widgets = {
+            'delivery_method': forms.RadioSelect(
+                choices = settings.DELIVERY_METHOD,
+            )
+        }

@@ -66,11 +66,26 @@ class OrderSentView(generic.DetailView):
         return super().get(request, slug)
 
 class OrderAcceptedView(generic.DetailView):
-    slug_field = 'uuid'
     model = models.Order
+    slug_field = 'uuid'
     context_object_name = 'order'
     template_name = 'transaction/order_accepted.html'
 
     def get(self, request, slug):
         order = get_object_or_404(models.Order, uuid=slug, status=3)
         return super().get(request, slug)
+
+@method_decorator(login_required, name='dispatch')
+class DeliveryMethodView(generic.UpdateView):
+    model = models.Order
+    form_class = forms.DeliveryMethodForm
+    slug_field = 'uuid'
+    template_name = 'transaction/delivery_method.html'
+    get_success_url = None
+
+    def get(self, request, slug):
+        order = get_object_or_404(models.Order, uuid=slug, status=3)
+        return super().get(request, slug)
+
+    def get_success_url(self):
+        return reverse_lazy('transaction:delivery_method', args=[self.kwargs['slug']])
