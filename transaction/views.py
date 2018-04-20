@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.conf import settings
 from django.urls import reverse_lazy
@@ -81,11 +81,18 @@ class DeliveryMethodView(generic.UpdateView):
     form_class = forms.DeliveryMethodForm
     slug_field = 'uuid'
     template_name = 'transaction/delivery_method.html'
-    get_success_url = None
 
     def get(self, request, slug):
         order = get_object_or_404(models.Order, uuid=slug, status=3)
         return super().get(request, slug)
 
     def get_success_url(self):
-        return reverse_lazy('transaction:delivery_method', args=[self.kwargs['slug']])
+        return reverse_lazy('transaction:delivery_select', args=[self.kwargs['slug']])
+
+@login_required
+def delivery_select(request, uuid):
+    order = get_object_or_404(models.Order, uuid=uuid)
+    if order.delivery_method == 1:
+        return redirect(reverse_lazy('transaction:delivery_post', args=[order.uuid]), permanent=True)
+    elif order.delivery_method == 2:
+        return redirect(reverse_lazy('transaction:delivery_hand', args=[order.uuid]), permanent=True)
