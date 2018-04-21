@@ -58,7 +58,7 @@
             <p>{{ user_address.first_name }}</p>
           </div>
         </div>
-        <p class="text-center"><a href="{% url 'transaction:delivery_post' uuid %}" class="button">この住所を利用する</a></p>
+        <p class="text-center"><a href="{% url 'transaction:delivery_register' uuid user_address.id %}" class="button">この住所を利用する</a></p>
       </div>
       {% endfor %}
     </div>

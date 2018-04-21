@@ -10,4 +10,5 @@ urlpatterns = [
     path('delivery/method/<uuid:slug>/', views.DeliveryMethodView.as_view(), name='delivery_method'),
     path('delivery/select/<uuid:uuid>/', views.delivery_select, name='delivery_select'),
     path('delivery/post/<uuid:slug>/', views.DeliveryPostView.as_view(), name='delivery_post'),
+    path('delivery/register/<uuid:uuid>/<int:id>/', views.delivery_register, name='delivery_register'),
 ]

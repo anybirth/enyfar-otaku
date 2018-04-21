@@ -122,3 +122,10 @@ class DeliveryPostView(generic.CreateView):
 
     def get_success_url(self):
         return reverse_lazy('transaction:delivery_post', args=[self.kwargs['slug']])
+
+@login_required
+def delivery_register(request, uuid, id):
+    order = get_object_or_404(models.Order, uuid=uuid)
+    order.requester_address = get_object_or_404(UserAddress, id=id)
+    order.save()
+    return redirect(reverse_lazy('transaction:delivery_post', args=[order.uuid]), permanent=True)
