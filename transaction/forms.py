@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from . import models
+from accounts.models import UserAddress
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -49,3 +50,8 @@ class DeliveryMethodForm(forms.ModelForm):
                 choices = settings.DELIVERY_METHOD,
             )
         }
+
+class DeliveryPostForm(forms.ModelForm):
+    class Meta:
+        model = UserAddress
+        fields = ['district', 'postal_code', 'address1', 'address2', 'last_name', 'first_name']

@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from . import models, forms
 from main.models import Item
+from accounts.models import UserAddress
 
 # Create your views here.
 
@@ -96,3 +97,28 @@ def delivery_select(request, uuid):
         return redirect(reverse_lazy('transaction:delivery_post', args=[order.uuid]), permanent=True)
     elif order.delivery_method == 2:
         return redirect(reverse_lazy('transaction:delivery_hand', args=[order.uuid]), permanent=True)
+
+@method_decorator(login_required, name='dispatch')
+class DeliveryPostView(generic.CreateView):
+    model = UserAddress
+    form_class = forms.DeliveryPostForm
+    template_name = 'transaction/delivery_post.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_addresses'] = UserAddress.objects.filter(user=self.request.user)
+        context['uuid'] = self.kwargs['slug']
+        return context
+
+    def form_valid(self, form):
+        user = self.request.user
+        user_address = form.save(commit=False)
+        user_address.user = user
+        user_address.save()
+        order = models.Order.objects.get(uuid=self.kwargs['slug'], status=3)
+        order.requester_address = UserAddress.objects.get(id=user_address.id)
+        order.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('transaction:delivery_post', args=[self.kwargs['slug']])
