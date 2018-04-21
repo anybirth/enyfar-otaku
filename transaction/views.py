@@ -64,6 +64,18 @@ class OrderSentView(generic.DetailView):
         order.status_deadline = None
         order.save()
         models.Order.objects.filter(status_deadline__lte=timezone.now()).delete()
+
+        protocol = 'https://' if self.request.is_secure() else 'http://'
+        host_name = settings.HOST_NAME
+        send_mail(
+            '依頼送信完了',
+            '依頼を受け付けました\n' +
+            '承認されると以下のURLにアクセスできます（テスト）\n\n' +
+            protocol + host_name + str(reverse_lazy('transaction:order_accepted', args=[slug])),
+            'info@anybirth.co.jp',
+            [request.user.email],
+            fail_silently=False,
+        )
         return super().get(request, slug)
 
 class OrderAcceptedView(generic.DetailView):
