@@ -121,11 +121,18 @@ class DeliveryPostView(generic.CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('transaction:delivery_post', args=[self.kwargs['slug']])
+        return reverse_lazy('transaction:payment', args=[self.kwargs['slug']])
 
 @login_required
 def delivery_register(request, uuid, id):
     order = get_object_or_404(models.Order, uuid=uuid)
     order.requester_address = get_object_or_404(UserAddress, id=id)
     order.save()
-    return redirect(reverse_lazy('transaction:delivery_post', args=[order.uuid]), permanent=True)
+    return redirect(reverse_lazy('transaction:payment', args=[order.uuid]), permanent=True)
+
+@method_decorator(login_required, name='dispatch')
+class PaymentView(generic.DetailView):
+    model = models.Order
+    slug_field = 'uuid'
+    context_object_name = 'order'
+    template_name = 'transaction/payment.html'
