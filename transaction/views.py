@@ -26,16 +26,16 @@ class OrderView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['item'] = get_object_or_404(Item, pk=1)
-        # context['item'] = get_object_or_404(Item, pk=self.request.GET.get('item'))
+        context['item'] = Item.objects.get(pk=1)
+        # context['item'] = Item.objects.get(pk=self.request.GET.get('item'))
         return context
 
     def form_valid(self, form):
         user = self.request.user
         order = form.save(commit=False)
         order.requester = user
-        order.item = get_object_or_404(Item, pk=1)
-        # order.item = get_object_or_404(Item, pk=self.request.GET.get('item'))
+        order.item = Item.objects.get(pk=1)
+        # order.item = Item.objects.get(pk=self.request.GET.get('item'))
         order.uuid = self._uuid
         order.status_deadline = timezone.now() + datetime.timedelta(hours=1)
         order.save()
@@ -126,7 +126,7 @@ class DeliveryPostView(generic.CreateView):
 @login_required
 def delivery_register(request, uuid, id):
     order = get_object_or_404(models.Order, uuid=uuid)
-    order.requester_address = get_object_or_404(UserAddress, id=id)
+    order.requester_address = UserAddress.objects.get(id=id)
     order.save()
     return redirect(reverse_lazy('transaction:payment', args=[order.uuid]), permanent=True)
 
