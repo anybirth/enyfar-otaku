@@ -13,7 +13,7 @@ class Order(models.Model):
     description = models.TextField(_('リクエスト説明文'), blank=True)
     number = models.IntegerField(_('個数'))
     delivery_method = models.SmallIntegerField(_('配送方法'), blank=True, null=True)
-    delivered_at_order = models.DateTimeField(_('希望お届け日時'), blank=True, null=True)
+    delivered_at_order = models.DateField(_('希望お届け日時'), blank=True, null=True)
     hand_place = models.CharField(_('商品手渡し場所'), max_length=255, blank=True)
     payment_method = models.SmallIntegerField(_('支払方法'), blank=True, null=True)
     price_order = models.IntegerField(_('希望価格'), blank=True, null=True)
