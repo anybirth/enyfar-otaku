@@ -1,3 +1,4 @@
+import datetime
 from django import forms
 from django.conf import settings
 from django.utils import timezone
@@ -41,6 +42,12 @@ class OrderForm(forms.ModelForm):
             self.fields[fieldname].help_text = None
             self.fields[fieldname].required = True
 
+    def clean_delivered_at_order(self):
+        delivered_at_order = self.cleaned_data['delivered_at_order']
+        if delivered_at_order <= timezone.now().date() + datetime.timedelta(days=1):
+            raise forms.ValidationError('明後日以降の日付を選択してください')
+        return delivered_at_order
+
 class DeliveryMethodForm(forms.ModelForm):
     class Meta:
         model = models.Order
@@ -55,3 +62,9 @@ class DeliveryPostForm(forms.ModelForm):
     class Meta:
         model = UserAddress
         fields = ['district', 'postal_code', 'address1', 'address2', 'last_name', 'first_name']
+
+    def clean_postal_code(self):
+        postal_code = self.cleaned_data['postal_code']
+        if not postal_code.isdigit():
+            raise forms.ValidationError('郵便番号はハイフンなしの半角数字で入力してください')
+        return postal_code

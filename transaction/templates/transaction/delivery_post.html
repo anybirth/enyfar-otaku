@@ -67,10 +67,13 @@
       {% csrf_token %}
       <div class="grid-x">
         <div class="cell small-4">
-          <p>{{ form.postal_code.label }}</p>
+          <p>{{ form.postal_code.label }}（半角数字、ハイフンなし）</p>
         </div>
         <div class="cell small-8">
           <p>{{ form.postal_code }}</p>
+          {% if form.postal_code.errors %}
+          <p>{{ form.postal_code.errors }}</p>
+          {% endif %}
         </div>
       </div>
       <div class="grid-x">
