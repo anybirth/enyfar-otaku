@@ -24,6 +24,9 @@ class OrderView(generic.CreateView):
     def __init__(self):
         self._uuid = str(uuid.uuid4())
 
+    def get_success_url(self):
+        return reverse_lazy('transaction:order_confirm', args=[self._uuid])
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['item'] = Item.objects.get(pk=1)
@@ -40,9 +43,6 @@ class OrderView(generic.CreateView):
         order.status_deadline = timezone.now() + datetime.timedelta(hours=1)
         order.save()
         return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('transaction:order_confirm', args=[self._uuid])
 
 @method_decorator(login_required, name='dispatch')
 class OrderConfirmView(generic.DetailView):
@@ -102,12 +102,12 @@ class DeliveryMethodView(generic.UpdateView):
     slug_field = 'uuid'
     template_name = 'transaction/delivery_method.html'
 
+    def get_success_url(self):
+        return reverse_lazy('transaction:delivery_select', args=[self.kwargs['slug']])
+
     def get(self, request, slug):
         order = get_object_or_404(models.Order, uuid=slug, status=3)
         return super().get(request, slug)
-
-    def get_success_url(self):
-        return reverse_lazy('transaction:delivery_select', args=[self.kwargs['slug']])
 
 @login_required
 def delivery_select(request, uuid):
@@ -122,6 +122,9 @@ class DeliveryPostView(generic.CreateView):
     model = UserAddress
     form_class = forms.DeliveryPostForm
     template_name = 'transaction/delivery_post.html'
+
+    def get_success_url(self):
+        return reverse_lazy('transaction:payment', args=[self.kwargs['slug']])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -138,9 +141,6 @@ class DeliveryPostView(generic.CreateView):
         order.requester_address = UserAddress.objects.get(id=user_address.id)
         order.save()
         return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('transaction:payment', args=[self.kwargs['slug']])
 
 @login_required
 def delivery_register(request, uuid, id):
