@@ -51,6 +51,10 @@ class OrderConfirmView(generic.DetailView):
     context_object_name = 'order'
     template_name = 'transaction/order_confirm.html'
 
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(models.Order, uuid=self.kwargs['slug'], status=1)
+        return obj
+
     def post(self, request, slug):
         order = get_object_or_404(models.Order, uuid=slug, status=1)
         order.status = 2
@@ -79,9 +83,9 @@ class OrderSentView(generic.DetailView):
     context_object_name = 'order'
     template_name = 'transaction/order_sent.html'
 
-    def get(self, request, slug):
-        order = get_object_or_404(models.Order, uuid=slug, status=2)
-        return super().get(request, slug)
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(models.Order, uuid=self.kwargs['slug'], status=2)
+        return obj
 
 class OrderAcceptedView(generic.DetailView):
     model = models.Order
@@ -89,9 +93,9 @@ class OrderAcceptedView(generic.DetailView):
     context_object_name = 'order'
     template_name = 'transaction/order_accepted.html'
 
-    def get(self, request, slug):
-        order = get_object_or_404(models.Order, uuid=slug, status=3)
-        return super().get(request, slug)
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(models.Order, uuid=self.kwargs['slug'], status=3)
+        return obj
 
 class OrderCancelView(generic.DeleteView):
     model = models.Order
@@ -99,6 +103,9 @@ class OrderCancelView(generic.DeleteView):
     template_name = 'transaction/order_cancel.html'
     success_url = reverse_lazy('transaction:order')
 
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(models.Order, uuid=self.kwargs['slug'], status=3)
+        return obj
 
 @method_decorator(login_required, name='dispatch')
 class DeliveryMethodView(generic.UpdateView):
@@ -107,12 +114,12 @@ class DeliveryMethodView(generic.UpdateView):
     slug_field = 'uuid'
     template_name = 'transaction/delivery_method.html'
 
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(models.Order, uuid=self.kwargs['slug'], status=3)
+        return obj
+
     def get_success_url(self):
         return reverse_lazy('transaction:delivery_select', args=[self.kwargs['slug']])
-
-    def get(self, request, slug):
-        order = get_object_or_404(models.Order, uuid=slug, status=3)
-        return super().get(request, slug)
 
 @login_required
 def delivery_select(request, uuid):
@@ -127,6 +134,10 @@ class DeliveryPostView(generic.CreateView):
     model = UserAddress
     form_class = forms.DeliveryPostForm
     template_name = 'transaction/delivery_post.html'
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(models.Order, uuid=self.kwargs['slug'], status=3)
+        return obj
 
     def get_success_url(self):
         return reverse_lazy('transaction:payment', args=[self.kwargs['slug']])
@@ -160,3 +171,7 @@ class PaymentView(generic.DetailView):
     slug_field = 'uuid'
     context_object_name = 'order'
     template_name = 'transaction/payment.html'
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(models.Order, uuid=self.kwargs['slug'], status=3)
+        return obj
