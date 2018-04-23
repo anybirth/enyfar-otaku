@@ -123,7 +123,7 @@ class DeliveryMethodView(generic.UpdateView):
 
 @login_required
 def delivery_select(request, uuid):
-    order = get_object_or_404(models.Order, uuid=uuid)
+    order = get_object_or_404(models.Order, uuid=uuid, status=3)
     if order.delivery_method == 1:
         return redirect(reverse_lazy('transaction:delivery_post', args=[order.uuid]), permanent=True)
     elif order.delivery_method == 2:
@@ -160,7 +160,7 @@ class DeliveryPostView(generic.CreateView):
 
 @login_required
 def delivery_register(request, uuid, id):
-    order = get_object_or_404(models.Order, uuid=uuid)
+    order = get_object_or_404(models.Order, uuid=uuid, status=3)
     order.requester_address = UserAddress.objects.get(id=id)
     order.save()
     return redirect(reverse_lazy('transaction:payment', args=[order.uuid]), permanent=True)
