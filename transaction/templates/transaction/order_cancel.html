@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">依頼キャンセル</h1>
+    <p class="text-center">本当にキャンセルしますか？</p>
+        <form method="post">
+          {% csrf_token %}
+          <p class="text-center"><input type="submit" value="キャンセル" class="alert button"></p>
+        </form>
+  </div>
+</div>
+
+{% endblock %}

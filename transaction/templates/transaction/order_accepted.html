@@ -50,6 +50,7 @@
       </div>
     </div>
     <p class="text-center"><a href="{% url 'transaction:delivery_method' order.uuid %}" class="button">手続きを進める</a></p>
+    <p class="text-center"><a href="{% url 'transaction:order_cancel' order.uuid %}" class="alert button">依頼をキャンセルする</a></p>
   </div>
 </div>
 

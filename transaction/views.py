@@ -88,6 +88,13 @@ class OrderAcceptedView(generic.DetailView):
         order = get_object_or_404(models.Order, uuid=slug, status=3)
         return super().get(request, slug)
 
+class OrderCancelView(generic.DeleteView):
+    model = models.Order
+    slug_field = 'uuid'
+    template_name = 'transaction/order_cancel.html'
+    success_url = reverse_lazy('transaction:order')
+
+
 @method_decorator(login_required, name='dispatch')
 class DeliveryMethodView(generic.UpdateView):
     model = models.Order
