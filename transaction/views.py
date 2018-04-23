@@ -51,14 +51,7 @@ class OrderConfirmView(generic.DetailView):
     context_object_name = 'order'
     template_name = 'transaction/order_confirm.html'
 
-@method_decorator(login_required, name='dispatch')
-class OrderSentView(generic.DetailView):
-    model = models.Order
-    slug_field = 'uuid'
-    context_object_name = 'order'
-    template_name = 'transaction/order_sent.html'
-
-    def get(self, request, slug):
+    def post(self, request, slug):
         order = get_object_or_404(models.Order, uuid=slug, status=1)
         order.status = 2
         order.status_deadline = None
@@ -76,6 +69,18 @@ class OrderSentView(generic.DetailView):
             [request.user.email],
             fail_silently=False,
         )
+
+        return redirect(reverse_lazy('transaction:order_sent', args=[order.uuid]), permanent=True)
+
+@method_decorator(login_required, name='dispatch')
+class OrderSentView(generic.DetailView):
+    model = models.Order
+    slug_field = 'uuid'
+    context_object_name = 'order'
+    template_name = 'transaction/order_sent.html'
+
+    def get(self, request, slug):
+        order = get_object_or_404(models.Order, uuid=slug, status=2)
         return super().get(request, slug)
 
 class OrderAcceptedView(generic.DetailView):
