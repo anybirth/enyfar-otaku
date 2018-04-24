@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'enyfar-otaku.middlewares.MemberMiddleware',
+    'enyfar-otaku.middlewares.DeleteMiddleware',
 ]
 
 ROOT_URLCONF = 'enyfar-otaku.urls'

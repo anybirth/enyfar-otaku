@@ -88,7 +88,6 @@ class SocialConfirmView(generic.UpdateView):
             return redirect('accounts:logout')
         user.social_confirm_deadline = timezone.now() + datetime.timedelta(minutes=10)
         user.save()
-        models.User.objects.filter(social_confirm_deadline__lte= timezone.now()).delete()
         return super().get(request)
 
     def form_valid(self, form):

@@ -60,7 +60,6 @@ class OrderConfirmView(generic.DetailView):
         order.status = 2
         order.status_deadline = None
         order.save()
-        models.Order.objects.filter(status_deadline__lte=timezone.now()).delete()
 
         protocol = 'https://' if self.request.is_secure() else 'http://'
         host_name = settings.HOST_NAME
