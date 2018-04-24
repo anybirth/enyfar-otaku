@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">配送情報</h1>
+    <h2 class="text-center">既存の配送先を利用する</h2>
+    <div class="grid-x">
+      {% for user_address in user_addresses %}
+      <div class="cell small-6">
+        <div class="grid-x">
+          <div class="cell small-6">
+            <p>郵便番号</p>
+          </div>
+          <div class="cell small-6">
+            <p>{{ user_address.postal_code }}</p>
+          </div>
+        </div>
+        <div class="grid-x">
+          <div class="cell small-6">
+            <p>都道府県</p>
+          </div>
+          <div class="cell small-6">
+            <p>{{ user_address.district }}</p>
+          </div>
+        </div>
+        <div class="grid-x">
+          <div class="cell small-6">
+            <p>市区町村・番地</p>
+          </div>
+          <div class="cell small-6">
+            <p>{{ user_address.address1 }}</p>
+          </div>
+        </div>
+        <div class="grid-x">
+          <div class="cell small-6">
+            <p>建物名・部屋番号</p>
+          </div>
+          <div class="cell small-6">
+            <p>{{ user_address.address2 }}</p>
+          </div>
+        </div>
+        <div class="grid-x">
+          <div class="cell small-6">
+            <p>姓</p>
+          </div>
+          <div class="cell small-6">
+            <p>{{ user_address.last_name }}</p>
+          </div>
+        </div>
+        <div class="grid-x">
+          <div class="cell small-6">
+            <p>名</p>
+          </div>
+          <div class="cell small-6">
+            <p>{{ user_address.first_name }}</p>
+          </div>
+        </div>
+        <p class="text-center"><a href="{% url 'transaction:delivery_register' uuid user_address.id %}" class="button">この住所を利用する</a></p>
+      </div>
+      {% endfor %}
+    </div>
+    <h2 class="text-center">新規の配送先を登録する</h2>
+    <form action="" method="post">
+      {% csrf_token %}
+      <div class="grid-x">
+        <div class="cell small-4">
+          <p>{{ form.postal_code.label }}（半角数字、ハイフンなし）</p>
+        </div>
+        <div class="cell small-8">
+          <p>{{ form.postal_code }}</p>
+          {% if form.postal_code.errors %}
+          <p>{{ form.postal_code.errors }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-4">
+          <p>{{ form.district.label }}</p>
+        </div>
+        <div class="cell small-8">
+          <p>{{ form.district }}</p>
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-4">
+          <p>{{ form.address1.label }}</p>
+        </div>
+        <div class="cell small-8">
+          <p>{{ form.address1 }}</p>
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-4">
+          <p>{{ form.address2.label }}</p>
+        </div>
+        <div class="cell small-8">
+          <p>{{ form.address2 }}</p>
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-4">
+          <p>{{ form.last_name.label }}</p>
+        </div>
+        <div class="cell small-8">
+          <p>{{ form.last_name }}</p>
+        </div>
+      </div>
+      <div class="grid-x">
+        <div class="cell small-4">
+          <p>{{ form.first_name.label }}</p>
+        </div>
+        <div class="cell small-8">
+          <p>{{ form.first_name }}</p>
+        </div>
+      </div>
+      <p class="text-center"><input type="submit" value="次へ" class="button"></p>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

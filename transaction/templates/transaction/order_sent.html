@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar{% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="grid-x">
+  <div class="cell small-10 small-offset-1">
+    <h1 class="text-center">依頼送信</h1>
+    <p class="text-center">依頼が送信されました</p>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>商品名</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.item.name }}</p>
+      </div>
+    </div>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>国・地域</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.item.country }}</p>
+      </div>
+    </div>
+    {% if order.item.district != None %}
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>都道府県・州</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.item.district }}</p>
+      </div>
+    </div>
+    {% endif %}
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>個数</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.number }}</p>
+      </div>
+    </div>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <p>配送希望日</p>
+      </div>
+      <div class="cell small-8">
+        <p>{{ order.delivered_at_order.year }}年{{ order.delivered_at_order.month }}月{{ order.delivered_at_order.day }}日</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

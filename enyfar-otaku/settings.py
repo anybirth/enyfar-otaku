@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'enyfar-otaku.middlewares.MemberMiddleware',
+    'enyfar-otaku.middlewares.DeleteMiddleware',
 ]
 
 ROOT_URLCONF = 'enyfar-otaku.urls'
@@ -142,7 +142,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_CHARSET = 'utf-8'
 
-
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
@@ -155,8 +154,13 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-
 HOST_NAME = '192.168.33.10:8000' if gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0] == 'localhost' else gethostbyaddr(gethostname().strip('host-').replace('-', '.'))[0]
+
+DELIVERY_METHOD = (
+    (1, '配送'),
+    (2, '手渡し'),
+)
+
 
 try:
     from .local_settings import *
