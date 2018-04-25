@@ -25,6 +25,16 @@
   <script src="{% static 'transaction/js/main.js' %}"></script>
 </head>
 <body>
+  <header>
+    <div class="grid-x">
+      <div class="cell small-4">
+        <a href=""><img class="logo-header center-vertically" src="{% static 'img/enyfar_logo_final_lengthwise.png' %}"></a>
+      </div>
+      <div class="cell small-2 small-offset-6">
+        <p class="text-center center-vertically"><i class="fas fa-bars fa-2x"></i></p>
+      </div>
+    </div>
+  </header>
   <div class="container-fluid">
     {% block content %}
     {% endblock %}
