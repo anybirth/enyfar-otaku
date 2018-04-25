@@ -31,7 +31,6 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='作成日時')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='更新日時')),
                 ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.Item', verbose_name='商品ID')),
-                ('proposal', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='transaction.Proposal', verbose_name='提案ID')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='ユーザーID')),
                 ('user_address', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='accounts.UserAddress', verbose_name='ユーザー住所ID')),
             ],
