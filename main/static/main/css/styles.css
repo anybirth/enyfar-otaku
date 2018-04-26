@@ -40,7 +40,8 @@
 
 /* top category */
 #top-category {
-  margin: 3rem 1rem;
+  padding: 1rem;
+  background-color: #eee;
 }
 #top-category .circle {
   width: 18vw;
@@ -51,4 +52,26 @@
 }
 #top-category p {
   font-size: 12px;
+}
+
+/* item search */
+#item-search h2 {
+  margin: 1rem;
+}
+#item-search select {
+  margin: 0 1rem;
+  width: calc(100% - 2rem);
+}
+#item-search .sort-button {
+  margin: 1rem 0 0;
+}
+#item-search .button {
+  color: #FFF;
+  border-radius: 2rem;
+}
+#item-search .warning:hover {
+  background-color: #ffae00;
+}
+#item-search .success:hover {
+  background-color: #3adb76;
 }

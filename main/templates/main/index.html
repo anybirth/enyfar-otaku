@@ -51,15 +51,12 @@
 </section>
 
 <section id="top-category">
-  <h2>アイテムを探す</h2>
+  <h2>人気のカテゴリー</h2>
   <div class="grid-x">
     {% for category in recommended_categories %}
     <div class="cell small-3">
       <a href="">
         <div class="circle center-horizontally">
-        {% if category.image != None %}
-          <img src="{% static category.image.url %}">
-        {% endif %}
         </div>
       </a>
       <p class="text-center">{{ category.name }}</p>
@@ -71,6 +68,46 @@
         </div>
       </a>
       <p class="text-center">その他</p>
+    </div>
+  </div>
+</section>
+
+<section id="item-search">
+  <h2>アイテムを探す</h2>
+  <select name="select-box">
+    <option value="0">すべてのカテゴリー</option>
+    {% for category in categories %}
+    <option value="{{ category.id }}">{{ category.name }}</option>
+    {% endfor %}
+  </select>
+  <div class="grid-x">
+    <div class="cell small-6">
+      <p class="sort-button text-center"><a id="button-rec" class="button small warning">おすすめ順</a></p>
+    </div>
+    <div class="cell small-6">
+      <p class="sort-button text-center"><a id="button-new" class="button small secondary">　新着順　</a></p>
+    </div>
+  </div>
+  <div class="scroll_wrapper" class="scroll">
+    <div class="scroll_inner item">
+      {% for category in recommended_items_array %}
+      {% for item in category %}
+      <div class="box display select-display-{{ item.category_id }} button-display-rec{% if item.category_id != 0 %} display-none{% endif %}">
+        <div class="scroll-img">
+        </div>
+        <p>{{ item.name|truncatechars:50 }}</p>
+      </div>
+      {% endfor %}
+      {% endfor %}
+      {% for category in new_items_array %}
+      {% for item in category %}
+      <div class="box display select-display-{{ item.category_id }} button-display-new display-none">
+        <div class="scroll-img">
+        </div>
+        <p>{{ item.name|truncatechars:50 }}</p>
+      </div>
+      {% endfor %}
+      {% endfor %}
     </div>
   </div>
 </section>
