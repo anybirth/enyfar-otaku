@@ -37,3 +37,18 @@
   color: #FFF;
   border-radius: 2rem;
 }
+
+/* top category */
+#top-category {
+  margin: 3rem 1rem;
+}
+#top-category .circle {
+  width: 18vw;
+  height: 18vw;
+  border-radius: 9vw;
+  margin-bottom: .5rem;
+  background-color: #707070;
+}
+#top-category p {
+  font-size: 12px;
+}

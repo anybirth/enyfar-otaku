@@ -50,4 +50,29 @@
   <p class="text-center"><a href="" class="button warning">リクエストはこちら</a></p>
 </section>
 
+<section id="top-category">
+  <h2>アイテムを探す</h2>
+  <div class="grid-x">
+    {% for category in recommended_categories %}
+    <div class="cell small-3">
+      <a href="">
+        <div class="circle center-horizontally">
+        {% if category.image != None %}
+          <img src="{% static category.image.url %}">
+        {% endif %}
+        </div>
+      </a>
+      <p class="text-center">{{ category.name }}</p>
+    </div>
+    {% endfor %}
+    <div class="cell small-3">
+      <a href="">
+        <div class="circle center-horizontally">
+        </div>
+      </a>
+      <p class="text-center">その他</p>
+    </div>
+  </div>
+</section>
+
 {% endblock %}
