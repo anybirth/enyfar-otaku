@@ -6,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 class Category(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
     name = models.CharField(_('カテゴリー名'), max_length=50, unique=True)
+    image = models.ImageField(_('画像'), upload_to='main/img/category', blank=True, null=True)
+    recommendation_ranking = models.PositiveSmallIntegerField(_('おすすめ順'), blank=True, null=True, unique=True)
     status = models.SmallIntegerField(_('状態'), default=0)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
@@ -20,6 +22,7 @@ class Category(models.Model):
 class Tag(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
     name = models.CharField(_('タグ名'), max_length=50, unique=True)
+    recommendation_ranking = models.PositiveSmallIntegerField(_('おすすめ順'), blank=True, null=True, unique=True)
     status = models.SmallIntegerField(_('状態'), default=0)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
@@ -39,6 +42,7 @@ class Item(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
     name = models.CharField(_('商品名'), max_length=50)
     description = models.TextField(_('商品説明文'), blank=True)
+    recommendation_ranking = models.PositiveSmallIntegerField(_('おすすめ順'), blank=True, null=True, unique=True)
     status = models.SmallIntegerField(_('状態'), default=0)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
@@ -52,7 +56,7 @@ class Item(models.Model):
 
 class ItemImage(models.Model):
     item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
-    image_path = models.ImageField(verbose_name=_('画像パス'), upload_to='images/', unique=True)
+    image = models.ImageField(verbose_name=_('画像'), upload_to='main/img/item/')
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
@@ -82,6 +86,7 @@ class ItemRecommendation(models.Model):
     price = models.IntegerField(_('価格'))
     quantity = models.IntegerField(_('商品数'))
     description = models.TextField(_('説明文'), blank=True)
+    recommendation_ranking = models.PositiveSmallIntegerField(_('おすすめ順'), blank=True, null=True, unique=True)
     expired_at = models.DateTimeField(_('掲載終了日'), blank=True)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)

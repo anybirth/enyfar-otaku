@@ -4,5 +4,8 @@
 __pycache__/
 local_settings.py
 db.sqlite3
-/media/
-/static/admin/
+/enyfar-otaku/media/
+/enyfar-otaku/static/*
+!/enyfar-otaku/static/css/
+!/enyfar-otaku/static/img/
+!/enyfar-otaku/static/js/
