@@ -15,3 +15,25 @@
 .top-title h1 {
   color: #FFF;
 }
+
+/* introduction */
+#introduction {
+  margin: 2rem 1rem;
+}
+#introduction p {
+  font-size: 12px;
+}
+#introduction h1 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+#introduction .circle {
+  width: 26vw;
+  height: 26vw;
+  border-radius: 13vw;
+  margin-bottom: .5rem;
+}
+#introduction .button {
+  color: #FFF;
+  border-radius: 2rem;
+}
