@@ -56,7 +56,7 @@ class Item(models.Model):
 
 class ItemImage(models.Model):
     item = models.ForeignKey('Item', on_delete=models.CASCADE, verbose_name=_('商品ID'))
-    image_path = models.ImageField(verbose_name=_('画像パス'), upload_to='images/', unique=True)
+    image = models.ImageField(verbose_name=_('画像'), upload_to='main/img/item/')
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
     updated_at = models.DateTimeField(_('更新日時'), auto_now=True)
 
