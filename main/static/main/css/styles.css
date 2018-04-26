@@ -1,0 +1,17 @@
+/* top slide */
+#top-slide {
+  width: 100vw;
+  height: 60vw;
+}
+.top-wrapper {
+  padding-top: 40vw;
+}
+.top-title {
+  margin: 0 5vw;
+  padding: 0 20px;
+  background-color: #9D9D9D;
+  border-radius: 20px;
+}
+.top-title h1 {
+  color: #FFF;
+}
