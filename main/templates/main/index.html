@@ -92,7 +92,7 @@
     <div class="scroll_inner item">
       {% for category in recommended_items_array %}
       {% for item in category %}
-      <div class="box display select-display-{{ item.category_id }} button-display-rec{% if item.category_id != 0 %} display-none{% endif %}">
+      <div class="box display display-{{ item.category_id }} display-rec{% if item.category_id != 0 %} display-none{% endif %}">
         <div class="scroll-img">
         </div>
         <p>{{ item.name|truncatechars:50 }}</p>
@@ -101,7 +101,7 @@
       {% endfor %}
       {% for category in new_items_array %}
       {% for item in category %}
-      <div class="box display select-display-{{ item.category_id }} button-display-new display-none">
+      <div class="box display display-{{ item.category_id }} display-new display-none">
         <div class="scroll-img">
         </div>
         <p>{{ item.name|truncatechars:50 }}</p>
