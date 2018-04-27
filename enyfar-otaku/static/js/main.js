@@ -1,4 +1,6 @@
 $(function() {
+
+  // drawer menu
   var height;
   var scrollpos;
   var header = $('#header').height();
