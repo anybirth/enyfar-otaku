@@ -18,6 +18,7 @@ $(function() {
     var target = '.display-' + selectStatus + '.display-' + buttonStatus;
     $('.display').addClass('display-none');
     $(target).removeClass('display-none');
+    return false;
   });
 
   $('#button-rec').on('click', function() {
@@ -29,6 +30,7 @@ $(function() {
     $('#button-rec').addClass('warning');
     $('.display').addClass('display-none');
     $(target).removeClass('display-none');
+    return false;
   });
 
   $('#button-new').on('click', function() {
@@ -40,5 +42,6 @@ $(function() {
     $('#button-new').addClass('warning');
     $('.display').addClass('display-none');
     $(target).removeClass('display-none');
+    return false;
   });
 });

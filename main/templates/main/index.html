@@ -88,26 +88,28 @@
       <p class="sort-button text-center"><a id="button-new" class="button small secondary">　新着順　</a></p>
     </div>
   </div>
-  <div class="scroll_wrapper" class="scroll">
-    <div class="scroll_inner item">
-      {% for category in recommended_items_array %}
-      {% for item in category %}
-      <div class="box display display-{{ item.category_id }} display-rec{% if item.category_id != 0 %} display-none{% endif %}">
-        <div class="scroll-img">
+  <div class="scroll">
+    <div class="scroll-wrapper">
+      <div class="scroll-inner">
+        {% for category in recommended_items_array %}
+        {% for item in category %}
+        <div class="box display display-{{ item.category_id }} display-rec{% if item.category_id != 0 %} display-none{% endif %}">
+          <div class="scroll-img">
+          </div>
+          <p>{{ item.name|truncatechars:50 }}</p>
         </div>
-        <p>{{ item.name|truncatechars:50 }}</p>
-      </div>
-      {% endfor %}
-      {% endfor %}
-      {% for category in new_items_array %}
-      {% for item in category %}
-      <div class="box display display-{{ item.category_id }} display-new display-none">
-        <div class="scroll-img">
+        {% endfor %}
+        {% endfor %}
+        {% for category in new_items_array %}
+        {% for item in category %}
+        <div class="box display display-{{ item.category_id }} display-new display-none">
+          <div class="scroll-img">
+          </div>
+          <p>{{ item.name|truncatechars:50 }}</p>
         </div>
-        <p>{{ item.name|truncatechars:50 }}</p>
+        {% endfor %}
+        {% endfor %}
       </div>
-      {% endfor %}
-      {% endfor %}
     </div>
   </div>
 </section>
