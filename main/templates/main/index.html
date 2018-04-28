@@ -114,4 +114,21 @@
   </div>
 </section>
 
+<section id="order-list">
+  <h2>リクエスト続々成立中！</h2>
+  <div class="scroll">
+    <div class="scroll-wrapper">
+      <div class="scroll-inner-small">
+        {% for order in orders %}
+        <div class="box-small">
+          <div class="scroll-img-small">
+          </div>
+          <p class="text-center">&yen;{{ order.price }}-</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

@@ -17,6 +17,7 @@ class IndexView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = models.Category.objects.all()
         context['recommended_categories'] = models.Category.objects.order_by('recommendation_ranking')[:3]
+        context['orders'] = Order.objects.filter(status=0).order_by('-created_at')
 
         context['recommended_items_array'] = []
         context['new_items_array'] = []

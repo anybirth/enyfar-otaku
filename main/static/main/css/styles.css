@@ -75,3 +75,11 @@
 #item-search .success:hover {
   background-color: #3adb76;
 }
+
+/* order list */
+#order-list {
+  margin: 2rem 0;
+}
+#order-list h2 {
+  margin: 0 1rem;
+}
