@@ -88,45 +88,41 @@
       <p class="sort-button text-center"><a id="button-new" class="button small secondary">　新着順　</a></p>
     </div>
   </div>
-  <div class="scroll">
-    <div class="scroll-wrapper">
-      <div class="scroll-inner">
-        {% for category in recommended_items_array %}
-        {% for item in category %}
-        <div class="box display display-{{ item.category_id }} display-rec{% if item.category_id != 0 %} display-none{% endif %}">
-          <div class="scroll-img">
-          </div>
-          <p>{{ item.name|truncatechars:50 }}</p>
+  <div class="scroll-wrapper scroll-wrapper-medium">
+    <div class="scroll-inner scroll-inner-medium">
+      {% for category in recommended_items_array %}
+      {% for item in category %}
+      <div class="box box-medium display display-{{ item.category_id }} display-rec{% if item.category_id != 0 %} display-none{% endif %}">
+        <div class="scroll-img-medium">
         </div>
-        {% endfor %}
-        {% endfor %}
-        {% for category in new_items_array %}
-        {% for item in category %}
-        <div class="box display display-{{ item.category_id }} display-new display-none">
-          <div class="scroll-img">
-          </div>
-          <p>{{ item.name|truncatechars:50 }}</p>
-        </div>
-        {% endfor %}
-        {% endfor %}
+        <p>{{ item.name|truncatechars:30 }}</p>
       </div>
+      {% endfor %}
+      {% endfor %}
+      {% for category in new_items_array %}
+      {% for item in category %}
+      <div class="box box-medium display display-{{ item.category_id }} display-new display-none">
+        <div class="scroll-img-medium">
+        </div>
+        <p>{{ item.name|truncatechars:30 }}</p>
+      </div>
+      {% endfor %}
+      {% endfor %}
     </div>
   </div>
 </section>
 
 <section id="order-list">
   <h2>リクエスト続々成立中！</h2>
-  <div class="scroll">
-    <div class="scroll-wrapper">
-      <div class="scroll-inner-small">
-        {% for order in orders %}
-        <div class="box-small">
-          <div class="scroll-img-small">
-          </div>
-          <p class="text-center">&yen;{{ order.price }}-</p>
+  <div class="scroll-wrapper scroll-wrapper-small">
+    <div class="scroll-inner scroll-inner-small">
+      {% for order in orders %}
+      <div class="box box-small">
+        <div class="scroll-img-small">
         </div>
-        {% endfor %}
+        <p class="text-center">&yen;{{ order.price }}-</p>
       </div>
+      {% endfor %}
     </div>
   </div>
 </section>

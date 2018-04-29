@@ -26,72 +26,6 @@
   transform: translateY(-50%);
 }
 
-/* horizontal scroll */
-.scroll {
-  overflow-x: hidden;
-}
-.scroll-wrapper {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  width: 100%;
-}
-.scroll-inner {
-  display: inline-block;
-  height: 93vw;
-  white-space: nowrap;
-  padding: 0;
-}
-.box {
-  width: 80vw;
-  top: 0px;
-  height: calc(100% - 4.5vw - 2px);
-  margin: 5vw;
-  display: inline-block;
-  vertical-align: top;
-  white-space: normal;
-  border: 1px solid #eee;
-  box-shadow: 0px 0px 2px;
-  border-radius: 4vw;
-}
-.box p {
-  margin: .5rem;
-}
-.scroll-img {
-  width: calc(80vw - 2px);
-  height: 60vw;
-  border-bottom: 1px solid #eee;
-  border-radius: 4vw 4vw 0 0;
-}
-::-webkit-scrollbar {
-    width: 0px;
-}
-
-/* horizontal scroll (small) */
-.scroll-inner-small {
-  display: inline-block;
-  height: 44vw;
-  white-space: nowrap;
-  padding: 0;
-}
-.box-small {
-  width: 40vw;
-  top: 0px;
-  height: calc(100% - 4.5vw - 2px);
-  margin: 5vw;
-  display: inline-block;
-  vertical-align: top;
-  white-space: normal;
-  border: 1px solid #eee;
-  box-shadow: 0px 0px 2px;
-  border-radius: 4vw;
-}
-.scroll-img-small {
-  width: calc(40vw - 2px);
-  height: 30vw;
-  border-bottom: 1px solid #eee;
-  border-radius: 4vw 4vw 0 0;
-}
-
 /* header */
 #header {
   width: 100%;
@@ -135,6 +69,72 @@
 #content {
   width: 100%;
   z-index: 100;
+}
+
+/* horizontal scroll */
+.scroll-wrapper {
+  overflow-y: hidden;
+}
+.scroll-inner {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+.box {
+  display: inline-block;
+  vertical-align: top;
+  white-space: normal;
+}
+.scroll-inner::-webkit-scrollbar {
+  display: none;
+}
+
+/* horizontal scroll (medium) */
+.scroll-wrapper-medium {
+  height: 85vw;
+}
+.scroll-inner-medium {
+  height: 90vw;
+}
+.box-medium {
+  width: 80vw;
+  height: 80vw;
+  margin: calc(5vw - 1px);
+  border: 1px solid #eee;
+  box-shadow: 0px 0px 2px;
+  border-radius: 4vw;
+}
+.scroll-img-medium {
+  width: 80vw;
+  height: 60vw;
+  border-bottom: 1px solid #eee;
+  border-radius: 4vw 4vw 0 0;
+}
+.box-medium p {
+  margin: .5rem;
+}
+
+/* horizontal scroll (small) */
+.scroll-wrapper-small {
+  height: 45vw;
+}
+.scroll-inner-small {
+  height: 50vw;
+}
+.box-small {
+  width: 40vw;
+  height: 40vw;
+  margin: calc(5vw - 1px);
+  border: 1px solid #eee;
+  box-shadow: 0px 0px 2px;
+  border-radius: 4vw;
+}
+.scroll-img-small {
+  width: 40vw;
+  height: 30vw;
+  border-bottom: 1px solid #eee;
+  border-radius: 4vw 4vw 0 0;
 }
 
 /* footer */
