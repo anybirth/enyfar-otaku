@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block title %}Enyfar{% endblock %}
+{% load static %}
+{% block content %}
+
+<section id="top-slide" style="background-color:#eee;">
+  <div class="top-slide-item">
+    <div class="top-wrapper">
+      <div class="top-title">
+        <h1 class="text-center">限定商品が明日届く！</h1>
+      </div>
+    </div>
+  </div>
+  <div class="top-slide-item">
+    <div class="top-wrapper">
+      <div class="top-title">
+        <h1 class="text-center">限定商品が明日届く！</h1>
+      </div>
+    </div>
+  </div>
+  <div class="top-slide-item">
+    <div class="top-wrapper">
+      <div class="top-title">
+        <h1 class="text-center">限定商品が明日届く！</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="introduction">
+  <h1>安く、早く、届く</h1>
+  <p class="text-right"><a href="">もっと詳しく→</a></p>
+  <div class="grid-x">
+    <div class="cell small-4">
+      <div class="circle center-horizontally" style="background-color:#eee;">
+      </div>
+      <p class="text-center">トラベラーが<br>あなたの国に<br>行く！</p>
+    </div>
+    <div class="cell small-4">
+      <div class="circle center-horizontally" style="background-color:#eee;">
+      </div>
+      <p class="text-center">旅程日を<br>確認！</p>
+    </div>
+    <div class="cell small-4">
+      <div class="circle center-horizontally" style="background-color:#eee;">
+      </div>
+      <p class="text-center">その日に<br>受け取り<br>発送！</p>
+    </div>
+  </div>
+  <p class="text-center"><a href="" class="button warning">リクエストはこちら</a></p>
+</section>
+
+<section id="top-category">
+  <h2>人気のカテゴリー</h2>
+  <div class="grid-x">
+    {% for category in recommended_categories %}
+    <div class="cell small-3">
+      <a href="">
+        <div class="circle center-horizontally">
+        </div>
+      </a>
+      <p class="text-center">{{ category.name }}</p>
+    </div>
+    {% endfor %}
+    <div class="cell small-3">
+      <a href="">
+        <div class="circle center-horizontally">
+        </div>
+      </a>
+      <p class="text-center">その他</p>
+    </div>
+  </div>
+</section>
+
+<section id="item-search">
+  <h2>アイテムを探す</h2>
+  <select name="select-box">
+    <option value="0">すべてのカテゴリー</option>
+    {% for category in categories %}
+    <option value="{{ category.id }}">{{ category.name }}</option>
+    {% endfor %}
+  </select>
+  <div class="grid-x">
+    <div class="cell small-6">
+      <p class="sort-button text-center"><a id="button-rec" class="button small warning">おすすめ順</a></p>
+    </div>
+    <div class="cell small-6">
+      <p class="sort-button text-center"><a id="button-new" class="button small secondary">　新着順　</a></p>
+    </div>
+  </div>
+  <div class="scroll-wrapper scroll-wrapper-medium">
+    <div class="scroll-inner scroll-inner-medium">
+      {% for category in recommended_items_array %}
+      {% for item in category %}
+      <div class="box box-medium display display-{{ item.category_id }} display-rec{% if item.category_id != 0 %} display-none{% endif %}">
+        <div class="scroll-img-medium">
+        </div>
+        <p>{{ item.name|truncatechars:30 }}</p>
+      </div>
+      {% endfor %}
+      {% endfor %}
+      {% for category in new_items_array %}
+      {% for item in category %}
+      <div class="box box-medium display display-{{ item.category_id }} display-new display-none">
+        <div class="scroll-img-medium">
+        </div>
+        <p>{{ item.name|truncatechars:30 }}</p>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="order-list">
+  <h2>リクエスト続々成立中！</h2>
+  <div class="scroll-wrapper scroll-wrapper-small">
+    <div class="scroll-inner scroll-inner-small">
+      {% for order in orders %}
+      <div class="box box-small">
+        <div class="scroll-img-small">
+        </div>
+        <p class="text-center">&yen;{{ order.price }}-</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
