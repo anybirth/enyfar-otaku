@@ -7,6 +7,7 @@ class Category(models.Model):
     user = models.ForeignKey('accounts.User', on_delete=models.CASCADE, verbose_name=_('ユーザーID'))
     name = models.CharField(_('カテゴリー名'), max_length=50, unique=True)
     image = models.ImageField(_('画像'), upload_to='main/img/category', blank=True, null=True)
+    description = models.TextField(_('説明文'), blank=True)
     recommendation_ranking = models.PositiveSmallIntegerField(_('おすすめ順'), blank=True, null=True, unique=True)
     status = models.SmallIntegerField(_('状態'), default=0)
     created_at = models.DateTimeField(_('作成日時'), auto_now_add=True)
