@@ -83,3 +83,8 @@
 #order-list h2 {
   margin: 0 1rem;
 }
+
+/* category name */
+#category-name {
+  padding: 2rem 2rem 1rem;
+}
