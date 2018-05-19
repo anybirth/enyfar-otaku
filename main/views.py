@@ -39,3 +39,8 @@ class IndexView(generic.ListView):
             context['recommended_items_array'].append(recommended_items)
             context['new_items_array'].append(new_items)
         return context
+
+class CategoryView(generic.DetailView):
+    model = models.Category
+    context_object_name = 'category'
+    template_name = 'main/item_list.html'
